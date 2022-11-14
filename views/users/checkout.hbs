@@ -1,0 +1,300 @@
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+    td {
+        font-size: 1.5rem;
+    }
+</style>
+
+<div class="page-wrapper">
+
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">Checkout<span>Shop</span></h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="checkout">
+                <div class="container">
+                    <form id="checkout-form">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+                                
+
+                                {{#each address}}
+                                <tr>
+
+                                    <td>
+
+                                        <input checked value="{{this._id}}" type="radio" name="addressId">
+                                        <span
+                                            style="display: inline-block; height: 100px; width: 350px; border: 1px solid green; margin-bottom: 20px; padding: 20px; border-radius: 6px;">
+                                            {{!-- <div class="row"> --}}
+
+                                                    <div style="margin-left: 300px; margin-top: -20px">
+                                                            <a href="/delete-ship-address/{{this._id}}" title="delete">
+                                                                <div class="icon" >
+                                                                    <i class="fa fa-trash"></i>
+                                                                    {{!-- <span class="wishlist-count badge">3</span> --}}
+                                                                </div>
+                                                          
+                                                            </a>
+                                                       
+                                                    </div>
+
+
+                                                {{this.firstName}} {{this.lastName}}
+                                                {{this.city}} {{this.state}} {{this.country}}
+                                                {{this.address}} {{this.pincode}}
+                                                {{!-- </div> --}}
+
+                                        </span>
+                                    </td> <br>
+                                </tr>
+                                {{/each}}
+                                {{!-- <input hidden type="text" name="user" value="{{vUser.name}}"> --}}
+                                <a href="/add-address">Add address</a>
+                            </div><!-- End .col-lg-9 -->
+
+
+                            <aside class="col-lg-5">
+                                <div class="summary summary-cart">
+                                    <h3 class="summary-title">Your Order</h3>
+                                    {{!-- <h3 class="summary-title">Cart Total</h3><!-- End .summary-title --> --}}
+
+                                    <table class="table table-summary">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each cartItems}}
+                                            <tr>
+                                                <td><a href="#">{{this.product.name}}({{this.quantity}})</a></td>
+                                                <td>{{this.total}}</td>
+                                            </tr>
+                                            {{/each}}
+
+                                            
+                                            {{#if discount.[0].discountedPrice}}
+                                                <tr class="summary-subtotal">
+                                               <td >Subtotal:</td>
+                                                <td>{{totalAmount}}</td></tr>
+                                                <tr>
+                                               <td >Discounted Percentage</td>
+                                                <td>{{discount.[0].couponDetails.discount}}</td></tr>
+                                               <tr> <td >Discounted Price</td>
+                                               <input type="hidden" value="{{discount.[0].discountedPrice}}" name="discountedPrice">
+                                                <td>{{discount.[0].discountedPrice}}</td></tr>
+
+                                                {{else}}
+                                                <tr class="summary-subtotal">
+                                                <td>Subtotal:</td>
+                                                <td>{{totalAmount}}</td></tr>
+                                                <tr><td>Discounted Percentage</td>
+                                                <td>0</td></tr>
+                                                <tr> <td>Discounted Price</td>
+                                                <td>{{totalAmount}}</td></tr>
+                                            {{/if}}
+
+                                               
+                                                {{!-- <td>Rs.<span id="totalP">{{totalAmount}}</span></td> --}}
+                                            </tr><!-- End .summary-subtotal -->
+                                            {{!-- <tr>
+                                                <td><label for="">discounted price Rs.</label></td>
+                                                <td><input readonly class="form-control" name="discountedPrice"
+                                                        type="text" id="ice"></td>
+                                            </tr> --}}
+                                            <tr class="summary-shipping">
+                                                <td>Shipping:</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+
+                                            <tr class="summary-shipping-row">
+                                                <td>
+                                                    {{!-- <div class="custom-control custom-radio"> --}}
+                                                        <input type="radio" id="paymentMethod" name="paymentMethod"
+                                                            value="COD" checked>
+                                                        <label for="free-shipping">Cash on
+                                                            Delivery</label>
+                                                        {{!--
+                                                    </div><!-- End .custom-control --> --}}
+                                                </td>
+                                                <td></td>
+                                            </tr><!-- End .summary-shipping-row -->
+
+                                            <tr class="summary-shipping-row">
+                                                <td>
+
+                                                    {{!-- <div class="custom-control custom-radio"> --}}
+                                                        <input type="radio" id="standart-shipping" name="paymentMethod"
+                                                            value="UPI">
+                                                        <label for="standart-shipping">Razor-Pay</label>
+                                                        {{!--
+                                                    </div><!-- End .custom-control --> --}}
+                                                </td>
+                                                <td></td>
+                                            </tr><!-- End .summary-shipping-row -->
+
+                                            <tr class="summary-shipping-row">
+                                                <td>
+                                                    {{!-- <div class="custom-control custom-radio"> --}}
+                                                        <input type="radio" id="paymentMethod" name="paymentMethod" value="paypal" >
+                                                        <label for="paypal-payment">Paypal</label>
+                                                        {{!--
+                                                    </div><!-- End .custom-control --> --}}
+                                                </td>
+                                                <td></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table><!-- End .table table-summary -->
+                                    {{#if address}}
+                                    <button type="submit"
+                                        class="btn btn-outline-primary-2 btn-order btn-block">Checkout</button>
+                                    {{else}}
+                                    <p class="text-danger">Please add shipping address to place order</p>
+                                    {{/if}}
+                                    
+                                </div><!-- End .summary -->
+
+                            </aside><!-- End .col-lg-3 -->
+                        </div><!-- End .row -->
+                        <input hidden type="text" name="userId" id="" value="{{vUser._id}}">
+                    </form>
+
+
+                </div><!-- End .container -->
+            </div><!-- End .checkout -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+
+
+</div><!-- End .page-wrapper -->
+<button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+</div><!-- End .mobile-menu-wrapper -->
+</div><!-- End .mobile-menu-container -->
+
+
+<div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="icon-close"></i></span>
+                </button>
+
+                <div class="form-box">
+                    <p class="text-center">Order placed successfully</p>
+                </div><!-- End .form-box -->
+            </div><!-- End .modal-body -->
+        </div><!-- End .modal-content -->
+    </div><!-- End .modal-dialog -->
+</div><!-- End .modal -->
+
+<!-- Plugins JS File -->
+<script src="assets/js/jquery.min.js"></script>
+
+
+
+<script>
+    $("#checkout-form").submit((e) => {
+        e.preventDefault();
+        $.ajax({
+            url: '/place-order',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: (response) => {
+               
+                {{!-- alert(response) --}}
+                if (response.codSuccess) {
+                    location.href = '/order-success'
+                } else if(response.razorpay){
+                    alert("You are redirect to Razorpay")
+                    console.log(response)
+                    razorPayment(response.response)
+                }else{
+                    getPaypal(response.orderId)
+                    
+                    console.log("OOOOOOOOOOOrder Id"+response.orderId)
+                }
+            }
+        })
+    })
+
+
+    function razorPayment(order) {
+        var options = {
+            "key": "rzp_test_v7Jb4RCdsOBEoc", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Mobshop",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+
+                verifyPayment(response,order)
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open()
+    }
+    function verifyPayment(payment,order) {
+        $.ajax({
+            url: '/verify-payment',
+            data: {
+                payment,
+                order
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    location.href = '/order-success'
+                } else {
+                    alert("Payment failed")
+                }
+            }
+        })
+    }
+
+    function getPaypal(id){
+        $.ajax({
+            url:'/pay/'+id,
+            method: 'get',
+            data:{
+            
+            },
+            //method:'post',
+            success:(response)=>{
+                location.href=response
+            }
+        })
+    }
+
+</script>

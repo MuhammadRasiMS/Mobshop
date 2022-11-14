@@ -1,0 +1,95 @@
+<head>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/skins/skin-demo-4.css">
+    <link rel="stylesheet" href="/assets/css/demos/demo-4.css">
+</head>
+
+<body>
+   
+    <div class="page-content">
+        <div class="container">
+            {{#ifEquals orderStatus.status 'delivered'}}
+                <div style="padding: 40px; float:right;">
+                    <a href="/view-invoice/{{../orderId}}">
+                        <button style="background-color: rgb(99, 196, 99); border:none;">VIEW INVOICE</button>
+                    </a>
+                </div>
+            {{/ifEquals}}
+    
+            <table style="font-size: 15px;" class="table" id="usersTable">
+                <thead>
+                    <tr>
+                        {{!-- <th scope="col">#</th> --}}
+                        <th scope="col">No.</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Image</th>
+      
+                        
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    {{#each products}}
+                        
+             
+                    <tr>
+                        <td>
+                            <p>1</p>
+                        </td>
+                        <td>
+                            <p>{{this.product.name}}</p>
+                        </td>
+                        <td>
+                          <p>{{this.product.price}}</p>
+                        </td>
+                        <td>
+                            <p>{{this.quantity}}</p>
+                        </td>
+                     
+                       <td>
+                        <a href="/view-product/{{product._id}}">
+                            <img width="50px" height="50px" src="/images/product/{{product.img.[0]}}" style="height: 50px; width: 45px;" alt="">
+                        </a>
+                       </td>
+               
+    
+                    </tr>
+    
+                    {{/each}}
+                </tbody>
+            </table>
+
+
+
+    
+            <div class="wishlist-share">
+                <div class="social-icons social-icons-sm mb-2">
+                    <label class="social-label">Share on:</label>
+                    <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                    <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                    <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                    <a href="#" class="social-icon" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
+                    <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                </div><!-- End .soial-icons -->
+            </div><!-- End .wishlist-share -->
+        </div><!-- End .container -->
+    </div><!-- End .page-content -->
+
+
+
+</body>
+
+
+<script>
+    var table = document.getElementsByTagName('table')[0],
+        rows = table.getElementsByTagName('tr'),
+        text = 'textContent' in document ? 'textContent' : 'innerText';
+
+    for (var i = 1,len = rows.length; i < len; i++) {
+        rows[i].children[0][text] = i;
+    }
+</script>
+
+<script src="/assets/js/jquery.min.js"></script>

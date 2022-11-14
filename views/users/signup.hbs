@@ -1,0 +1,142 @@
+
+<section  class="" style="background-image: linear-gradient(to right, rgba(255,0,0,0), rgb(181, 139, 71));">
+    <div class="container  h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <div class="card-body ">
+
+                        <h3 class="text-center">User Sign up</h3>
+                        {{#if signupErr}}
+                        <p class="btn-danger text-center">{{signupErr}}</p>
+                        {{/if}}
+                        <form action="/signup" method="POST" >
+                            <div >
+                                <label class="form-label" for="name">Name</label>
+                                <input type="text" id="name" name="name" onkeyup="validatename()" class="form-control form-control-lg" />
+                                <span id="ErrorName"></span>
+                            </div>
+
+                            <div class="mt-3">
+                                <label class="form-label" for="userName">User Name</label>
+                                <input type="text" id="userName" name="userName" onkeyup="validateUsername()" class="form-control form-control-lg" />
+                                <span id="ErrorUserName"></span>
+                            </div>
+
+                            <div class="mt-3">
+                                <label class="form-label" for="email">Email</label>
+                                <input type="email" id="email" name="email" onkeyup="validateEmail()" class="form-control form-control-lg" />
+                                <span id="ErrorEmail"></span>
+                            </div>
+
+                            <div class="mt-3">
+                                <label class="form-label" for="phoneNumber">Phone Number</label>
+                                <input type="" id="phoneNumber" name="phoneNumber" onkeyup="validatePhoneNumber()" class="form-control form-control-lg" />
+                                <span id="ErrorPhoneNumber"></span>
+                            </div>
+
+                            <div class="mt-3">
+                                <label class="form-label" for="password">Password</label>
+                                <input type="password" id="password" name="password" class="form-control form-control-lg" />
+                            </div>
+                            
+                            <input type="text" style="display: none;" value="true" name="status">
+
+                            <button class="mt-3 btn btn-primary btn-lg btn-block" type="submit" onclick="return validateForm()">Sign up</button>
+                        </form>
+                        <p class="mt-3 text-center">Already have an account? <a href="login">Login</a></p>
+                        <hr class="my-4">
+                        <p style="text-align: center; color:red" id="ErrorSubmit"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+     
+var ErrorName=document.getElementById('ErrorName');
+var ErrorUserName=document.getElementById('ErrorUserName');
+var ErrorEmail=document.getElementById('ErrorEmail');
+var ErrorPhoneNumber = document.getElementById('ErrorPhoneNumber')
+var ErrorSubmit=document.getElementById('ErrorSubmit');
+
+function validatename(){
+    
+    var vname=document.getElementById('name').value;
+    var required=4;
+    var left=required-vname.length;
+    var letters = /^[A-Za-z]+$/;
+    if(left>0 && vname.match(letters)){
+        ErrorName.innerHTML=left+'More Charecters required';
+        ErrorName.style.color = "red";
+        return false;
+    }else if(!vname.match(letters)){
+        ErrorName.innerHTML='invalid name';
+        ErrorName.style.color = "red";
+        return false;
+    }
+    ErrorName.innerHTML='valid';
+    ErrorName.style.color = "green";
+    return true;
+}
+
+function validateUsername(){
+    var vUsername=document.getElementById('userName').value;
+    var required=4;
+    var left=required-vUsername.length;
+    if(left>0){
+        ErrorUserName.innerHTML=left+'More Charecters required';
+        ErrorUserName.style.color = "red";
+        return false;
+    }
+    ErrorUserName.innerHTML='valid';
+    ErrorUserName.style.color = "green";
+    return true;
+}
+
+function validateEmail(){    
+    var vemail=document.getElementById('email').value;
+    
+    if(vemail.length == 0){
+        ErrorEmail.innerHTML='Email required';
+        ErrorEmail.style.color = "red";
+    
+    }  
+    if(!vemail.match(/^([\-\.0-9a-zA-Z]+)@([\-\..0-9a-zA-Z]+)\.([a-z]){2,7}$/)){
+        ErrorEmail.innerHTML='Email Invalid';
+        ErrorEmail.style.color = "red";
+
+        return false;
+    }
+    ErrorEmail.innerHTML='valid';
+    ErrorEmail.style.color = "green";
+    return true;
+}
+
+function validatePhoneNumber(){
+    var vPhoneNumber = document.getElementById('phoneNumber').value;
+    var required = 10;
+    var left = required - vPhoneNumber.length;
+    if(left>0){
+        ErrorPhoneNumber.innerHTML = 'invalid phone-number';
+        ErrorPhoneNumber.style.color = 'red';
+        return false;
+    }
+    ErrorPhoneNumber.innerHTML = 'valid';
+    ErrorPhoneNumber.style.color = 'green';
+    return true;
+}
+
+
+function validateForm(){
+    if(!validatename() || !validateEmail() || !validatemessage() || !validatesubject()){
+        ErrorSubmit.style.display='block';
+        ErrorSubmit.innerHTML='Please fix error';
+        setTimeout(function(){ErrorSubmit.style.display='none';},3000);
+        return false;
+    }
+}
+
+</script>

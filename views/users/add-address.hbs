@@ -1,0 +1,61 @@
+<link rel="stylesheet" href="assets/css/style.css">
+<div class="container">
+    {{!-- <div class="row"> --}}
+        <div class="col-lg-9">
+            <h3 class="text-center">Add Address</h3><!-- End .checkout-title -->
+            <form action="/add-address" method="post">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>First Name *</label>
+                        <input name="firstName" type="text" class="form-control" required>
+                    </div><!-- End .col-sm-6 -->
+
+                    <div class="col-sm-6">
+                        <label>Last Name *</label>
+                        <input name="lastName" type="text" class="form-control" required>
+                    </div><!-- End .col-sm-6 -->
+                </div><!-- End .row -->
+
+                <label>Country *</label>
+                <input name="country" type="text" class="form-control" required>
+
+                <label>Address *</label>
+                <textarea name="address" type="text" class="form-control" placeholder="House number and Street name"
+                    required></textarea>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Town / City *</label>
+                        <input name="city" type="text" class="form-control" required>
+                    </div><!-- End .col-sm-6 -->
+
+                    <div class="col-sm-6">
+                        <label>State *</label>
+                        <input name="state" type="text" class="form-control" required>
+                    </div><!-- End .col-sm-6 -->
+                </div><!-- End .row -->
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Pin code *</label>
+                        <input name="pincode" type="text" class="form-control" required>
+                    </div><!-- End .col-sm-6 -->
+
+                    <div class="col-sm-6">
+                        <label>Phone *</label>
+                        <input name="phone" type="tel" class="form-control" required>
+                    </div><!-- End .col-sm-6 -->
+                </div><!-- End .row -->
+
+                <label>Email address *</label>
+                <input name="email" type="email" class="form-control" required>
+
+                {{!-- <input name="userId" value="{{vUser._id}}" type="text" hidden> --}}
+                {{!-- <div class="text-center"> --}}
+                    <button class=" btn btn-success m-4" type="submit">submit</button>
+                    {{!--
+                </div> --}}
+            </form>
+        </div>
+    </div>
+</div>

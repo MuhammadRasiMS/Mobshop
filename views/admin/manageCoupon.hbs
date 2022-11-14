@@ -1,0 +1,118 @@
+<main id="main" class="main" style="margin-left: -40px; margin-top: -20px;">
+    <div class="card" >
+        <div class="card-body">
+            <div style="height: 60px; background-color: rgb(62, 0, 0); " class="pt-2">
+                <h2 class=" text-center text-white">Manage Coupons</h2>
+            </div>
+
+            {{#if couponErrMssg}}
+            <h3 class="text-center text-danger mt-3">{{couponErrMssg}}</h2>
+                {{else}}
+                <h3 class="text-success text-center mt-3">{{ couponSuccessMssg}}</h2>
+                    {{/if}}
+
+                    <!-- Bordered Tabs Justified -->
+                    <ul class="nav nav-tabs nav-tabs-bordered d-flex mt-4" id="borderedTabJustified" role="tablist">
+                        <li class="nav-item flex-fill" role="presentation">
+                            <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
+                                data-bs-target="#bordered-justified-home" type="button" role="tab" aria-controls="home"
+                                aria-selected="true">View Coupon</button>
+                        </li>
+                        <li class="nav-item flex-fill" role="presentation">
+                            <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
+                                data-bs-target="#bordered-justified-profile" type="button" role="tab"
+                                aria-controls="profile" aria-selected="false">Add Coupon</button>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                        <div class="tab-pane fade show active mt-5" id="bordered-justified-home" role="tabpanel"
+                            aria-labelledby="home-tab">
+                            <table class="table table-hover " id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No.</th>
+                                        <th scope="col">Coupon Code</th>
+                                        <th scope="col">Discription</th>
+                                        <th scope="col">Discount</th>
+                                        <th scope="col">Expiry date</th>
+                                        <th scope="col">Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each coupons}}
+                                    <tr>
+                                        {{!-- <th scope="row"><input type="checkbox" /></th> --}}
+                                        <td></td>
+                                        <td class="tm-product-name">{{this.couponCode}}</td>
+                                        <td>{{this.discription}}</td>
+                                        <td>{{this.discount}}%</td>
+                                        <td>{{this.Expirydate}}</td>
+
+                                        <td>
+                                            <a href="/admin/delete-coupon/{{this._id}}"><button
+                                                    onclick="return confirm('Do you want to remove this coupon - {{this.couponCode}} ?')" class="btn btn-outline-danger text-uppercase"><i
+                                                        class="bi bi-x-circle-fill"></i></button>
+                                            </a>
+                                        </td>
+
+
+                                        {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel"
+                            aria-labelledby="profile-tab">
+                            <div class="col-md-6 float-right">
+                                <div class="card">
+                                    <div class="card-body">
+
+
+                                        <!-- Vertical Form -->
+                                        <form class="row g-3 mt-5" method="post" action="/admin/add-coupon">
+                                            <div class="col-12 ">
+                                                <label for="inputNanme4" class="form-label">Coupon Code</label>
+                                                <input type="text" name="couponCode" class="form-control"
+                                                    id="inputNanme4">
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="inputEmail4" class="form-label">Discription</label>
+                                                <input type="text" name="discription" class="form-control"
+                                                    id="inputEmail4">
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="inputPassword4" class="form-label">Discount</label>
+                                                <input type="tel" name="discount" class="form-control"
+                                                    id="inputPassword4">
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="inputAddress" class="form-label">Expiry Date</label>
+                                                <input type="date" name="Expirydate" class="form-control"
+                                                    id="inputAddress" placeholder="1234 Main St">
+                                            </div>
+                                            <div class="text-center">
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                            </div>
+                                        </form><!-- Vertical Form -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End Bordered Tabs Justified -->
+        </div>
+    </div>
+</main>
+
+<script>
+    var table = document.getElementsByTagName('table')[0],
+        rows = table.getElementsByTagName('tr'),
+        text = 'textContent' in document ? 'textContent' : 'innerText';
+
+    for (var i = 1,len = rows.length; i < len; i++) {
+        rows[i].children[0][text] = i;
+    }
+</script>
+
+<script src="/assets2/js/main.js"></script>

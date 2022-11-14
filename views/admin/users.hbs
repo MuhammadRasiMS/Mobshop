@@ -1,0 +1,58 @@
+
+<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+
+
+<section>
+    <div class="container mt-4">
+        <div class="row">
+
+            <table class="table mt-5" id="usersTable">
+                <thead>
+                    <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each usersData}}
+                    <tr>
+                        <td></td>
+                        <td>{{this.name}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{this.phoneNumber}}</td>
+                        <td>
+                            {{#if this.status}}
+                            <a href="/admin/block-user/{{this._id}}"
+                                onclick="return confirm('do you want to block the user {{this.name}}')"><button
+                                    class="btn btn-danger" >Block</button></a>
+                            {{else}}
+                            <a href="/admin/unblock-user/{{this._id}}"
+                                onclick="return confirm('do you want to unblock the user {{this.name}}')"><button
+                                    class="btn btn-success" >Unblock</button></a>
+                            {{/if}}
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<script>
+    var table = document.getElementsByTagName('table')[0],
+        rows = table.getElementsByTagName('tr'),
+        text = 'textContent' in document ? 'textContent' : 'innerText';
+
+    for (var i = 1,len = rows.length; i < len; i++) {
+        rows[i].children[0][text] = i;
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#usersTable').DataTable();
+    });
+</script>

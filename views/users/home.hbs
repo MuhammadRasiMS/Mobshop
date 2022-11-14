@@ -1,0 +1,253 @@
+<head>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/skins/skin-demo-4.css">
+    <link rel="stylesheet" href="/assets/css/demos/demo-4.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+
+        <main  class="main">
+            <div class="intro-slider-container mb-5">
+                <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
+                    data-owl-options='{
+                        "dots": true,
+                        "nav": false, 
+                        "responsive": {
+                            "1200": {
+                                "nav": true,
+                                "dots": false
+                            }
+                        }
+                    }'>
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/slide-1.png);">
+                        <div class="container intro-content">
+                            <div class="row justify-content-end">
+
+                            </div><!-- End .row -->
+                        </div><!-- End .intro-content -->
+                    </div><!-- End .intro-slide -->
+
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/slide-2.png);">
+                        <div class="container intro-content">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
+                                    <h1 class="intro-title" style="color: white;">Apple iPhone 14 Pro <br>12.9 Inch, 64GB </h1><!-- End .intro-title -->
+
+                                    <div class="intro-price">
+                                        <sup>Today:</sup>
+                                        <span class="text-primary">
+                                            ₹1,39,999<sup>.99</sup>
+                                        </span>
+
+                                    </div><!-- End .intro-price -->
+
+                                    <a href="category.html" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
+                                </div><!-- End .col-md-6 offset-md-6 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .intro-content -->
+                    </div><!-- End .intro-slide -->
+                </div><!-- End .intro-slider owl-carousel owl-simple -->
+
+                <span class="slider-loader"></span><!-- End .slider-loader -->
+            </div><!-- End .intro-slider-container -->
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+            <div class="">
+                <h2 class="title text-center mb-4">Explore Categories</h2><!-- End .title text-center -->
+                
+                <div class="cat-blocks-container ">
+                    <div class="row justify-content-center">                        
+
+                        {{#each category}}
+                        <div class="col-6 col-sm-4 col-lg-2">
+                            <a href="category.html" class="cat-block">
+                                <figure>
+                                    <span>
+                                        <img style="width: 100px; height: 100px;" src="/images/product/{{this.img.[0]}}" alt="Category image">
+                                    </span>
+                                </figure>
+
+                                <h3 class="cat-block-title">{{this.name}}</h3><!-- End .cat-block-title -->
+                            </a>
+                        </div><!-- End .col-sm-4 col-lg-2 -->
+                        {{/each}}
+
+                    </div><!-- End .row -->
+                </div><!-- End .cat-blocks-container -->
+            </div><!-- End .container -->
+
+            <div class="mb-4"></div><!-- End .mb-4 -->
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+            
+
+            <div class="mb-3"></div><!-- End .mb-5 -->
+
+            <div class="container new-arrivals">
+                <div class="heading heading-flex mb-3">
+                    <div class="heading-left">
+                        <h2 class="title">Products</h2><!-- End .title -->
+                    </div><!-- End .heading-left -->
+
+                   <div class="heading-right">
+                        <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="new-all-link" data-toggle="tab" href="#new-all-tab" role="tab" aria-controls="new-all-tab" aria-selected="true">All</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="new-tv-link" data-toggle="tab" href="#new-tv-tab" role="tab" aria-controls="new-tv-tab" aria-selected="false">smart phones</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="new-computers-link" data-toggle="tab" href="#new-computers-tab" role="tab" aria-controls="new-computers-tab" aria-selected="false">feature phones</a>
+                            </li>
+                             
+                        </ul>
+                   </div><!-- End .heading-right -->
+                </div><!-- End .heading -->
+
+                
+            </div><!-- End .container -->
+
+
+            <div class="container for-you">
+
+                <div class="products">
+                    <div class="row justify-content-center">
+
+                        {{#each products}}
+                        <div class="col-6 col-md-4 col-lg-3">
+
+                            <div class="product product-2">
+                                <figure class="product-media">
+                                    {{!-- <span class="product-label label-circle label-sale">Sale</span> --}}
+                                    <a href="/view-product/{{this._id}}">
+                                        <img style="height: 25rem" src="/images/product/{{this.img.[0]}}" alt="Product image" class="product-image">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
+                                    </div><!-- End .product-action -->
+
+                                    <div class="product-action">
+                                        <a href="" onclick="addToCart('{{this._id}}')" class="btn-product btn-cart" title="Add to cart"><span>add to cart</span></a>
+                                        <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
+                                    </div><!-- End .product-action -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat">
+                                        <a href="#">{{this.category.name}}</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title"><a href="product.html">{{this.name}}</a></h3><!-- End .product-title -->
+                                    <div class="product-price">
+                                        <span class="new-price">Rs.{{this.price}}</span>
+                                        
+                                    </div><!-- End .product-price -->
+                                    <div class="ratings-container">
+                                        <div class="ratings">
+                                            <div class="ratings-val" style="width: 40%;"></div><!-- End .ratings-val -->
+                                        </div><!-- End .ratings -->
+                                        <span class="ratings-text">( 4 Reviews )</span>
+                                    </div><!-- End .rating-container -->
+
+                                    <div class="product-nav product-nav-dots">
+                                        <a href="#" class="active" style="background: #666666;"><span class="sr-only">Color name</span></a>
+                                        <a href="#" style="background: #ff887f;"><span class="sr-only">Color name</span></a>
+                                        <a href="#" style="background: #6699cc;"><span class="sr-only">Color name</span></a>
+                                        <a href="#" style="background: #f3dbc1;"><span class="sr-only">Color name</span></a>
+                                        <a href="#" style="background: #eaeaec;"><span class="sr-only">Color name</span></a>
+                                    </div><!-- End .product-nav -->
+                                </div><!-- End .product-body -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        {{/each}}
+
+
+                    </div><!-- End .row -->
+                </div><!-- End .products -->
+            </div><!-- End .container -->
+
+             <div>
+                <div class="more-container text-center mt-1 mb-5">
+                    <a href="#" class="btn btn-outline-dark-2 btn-round btn-more"><span>Shop more products</span><i class="icon-long-arrow-right"></i></a>
+                </div><!-- End .more-container -->
+            </div><!-- End .container -->
+
+            <div class="mb-4"></div><!-- End .mb-4 -->
+
+            <div class="container">
+                <hr class="mb-0">
+            </div><!-- End .container -->
+
+            <div class="icon-boxes-container bg-transparent">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="icon-box icon-box-side">
+                                <span class="icon-box-icon text-dark">
+                                    <i class="icon-rocket"></i>
+                                </span>
+                                <div class="icon-box-content">
+                                    <h3 class="icon-box-title">Free Shipping</h3><!-- End .icon-box-title -->
+                                    <p>Orders $50 or more</p>
+                                </div><!-- End .icon-box-content -->
+                            </div><!-- End .icon-box -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="icon-box icon-box-side">
+                                <span class="icon-box-icon text-dark">
+                                    <i class="icon-rotate-left"></i>
+                                </span>
+
+                                <div class="icon-box-content">
+                                    <h3 class="icon-box-title">Free Returns</h3><!-- End .icon-box-title -->
+                                    <p>Within 30 days</p>
+                                </div><!-- End .icon-box-content -->
+                            </div><!-- End .icon-box -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="icon-box icon-box-side">
+                                <span class="icon-box-icon text-dark">
+                                    <i class="icon-info-circle"></i>
+                                </span>
+
+                                <div class="icon-box-content">
+                                    <h3 class="icon-box-title">Get 20% Off 1 Item</h3><!-- End .icon-box-title -->
+                                    <p>when you sign up</p>
+                                </div><!-- End .icon-box-content -->
+                            </div><!-- End .icon-box -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="icon-box icon-box-side">
+                                <span class="icon-box-icon text-dark">
+                                    <i class="icon-life-ring"></i>
+                                </span>
+
+                                <div class="icon-box-content">
+                                    <h3 class="icon-box-title">We Support</h3><!-- End .icon-box-title -->
+                                    <p>24/7 amazing services</p>
+                                </div><!-- End .icon-box-content -->
+                            </div><!-- End .icon-box -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .icon-boxes-container -->
+        </main><!-- End .main -->
+
+        
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    
+    <script src="/javascripts/script.js"></script>
+       
+    <script src="/assets/js/jquery.min.js"></script>

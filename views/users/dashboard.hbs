@@ -1,0 +1,292 @@
+
+<div class="page-wrapper">
+
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">My Account<span>Shop</span></h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">My Account</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="dashboard">
+                <div class="container">
+                    <div class="row">
+                        <aside class="col-md-4 col-lg-3">
+                            <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab"
+                                        href="#tab-dashboard" role="tab" aria-controls="tab-dashboard"
+                                        aria-selected="true">Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders"
+                                        role="tab" aria-controls="tab-orders" aria-selected="false">Orders</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address"
+                                        role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
+                                </li>
+                                <li class="nav-item d-none">
+                                    <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads"
+                                        role="tab" aria-controls="tab-downloads" aria-selected="false">Downloads</a>
+                                </li>
+                                <li class="nav-item" class="nav-item">
+                                    <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account"
+                                        role="tab" aria-controls="tab-account" aria-selected="false">Account Details</a>
+                                </li>
+                            </ul>
+                        </aside><!-- End .col-lg-3 -->
+
+                        <div class="col-md-8 col-lg-9">
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel"
+                                    aria-labelledby="tab-dashboard-link">
+                                <section style="background-color: #eee;">
+                                    <div class="container py-5">
+                                        
+                                
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="card mb-4">
+                                                    <div class="card-body text-center">
+                                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                                                            alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                                        <h5 class="my-3">{{userAddress.name}}</h5>
+                                                        <p class="text-muted mb-1">{{userAddress.userName}}</p>
+                                                        <p class="text-muted mb-4">{{userAddress.email}}</p>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="card mb-4">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Full Name</p>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <p class="text-muted mb-0">{{userAddress.name}}</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">User Name</p>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <p class="text-muted mb-0">{{userAddress.userName}}</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Email</p>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <p class="text-muted mb-0">{{userAddress.email}}</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Mobile</p>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <p class="text-muted mb-0">{{userAddress.phoneNumber}}</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                </div><!-- .End .tab-pane -->
+
+                                <div class="tab-pane fade" id="tab-orders" role="tabpanel"
+                                    aria-labelledby="tab-orders-link">
+
+                                    <section>
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-10">
+
+                                                    <table style="font-size: 15px;" class="table" id="usersTable">
+                                                        <thead>
+                                                            <tr>
+                                                                {{!-- <th scope="col">#</th> --}}
+                                                                <th scope="col">No.</th>
+                                                                <th scope="col">Date</th>
+                                                                <th scope="col"></th>
+                                                                <th scope="col">Total Amount</th>
+                                                                <th scope="col">Payment Method</th>
+                                                                <th scope="col">Status</th>
+                                                                <th></th>
+                                                                <th></th>
+
+                                                                {{!-- <th scope="col">Image</th> --}}
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {{#each orders}}
+                                                            <tr>
+                                                                <td>
+                                                                    <p>1</p>
+                                                                </td>
+                                                                <td>
+                                                                    <p>{{this.date}}</p>
+                                                                </td>
+                                                                <td>
+                                                                    <p>{{this.deliveryDetails.firstName}}</p>
+                                                                </td>
+                                                                <td>
+                                                                    <p>₹ {{this.totalAmount.grandtotal}}</p>
+                                                                </td>
+                                                                <td>
+                                                                    <p>{{this.paymentMethod}}</p>
+                                                                </td>
+                                                                <td>
+                                                                    <p>{{this.status}}</p>
+                                                                </td>
+                                                                <td>
+                                                                    <p class="btn"><a
+                                                                            href="/view-order-products/{{this._id}}">view
+                                                                            products</a></p>
+                                                                </td>
+                                                                {{#if this.orderCancelled}}
+                                                                <td></td>
+                                                                {{else}}
+                                                                <td><a style="color: white; text-decoration: none;"
+                                                                        href="/order-cancel/{{this._id}}"
+                                                                        onclick="return confirm('do you want to cancel the order')"><button
+                                                                            class="btn btn-danger">Cancel
+                                                                            Order</button></a>
+                                                                </td>
+                                                                {{/if}}
+                                                            </tr>
+
+                                                            {{/each}}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div><!-- .End .tab-pane -->
+
+                                <div class="tab-pane fade" id="tab-address" role="tabpanel"
+                                    aria-labelledby="tab-address-link">
+                                    <p>The following addresses will be used on the checkout page by default.</p>
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="card card-dashboard">
+                                                <div class="card-body">
+                                                    <h3 class="card-title">Billing Address</h3><!-- End .card-title -->
+
+                                                    <p>User Name<br>
+                                                        User Company<br>
+                                                        John str<br>
+                                                        New York, NY 10001<br>
+                                                        1-234-987-6543<br>
+                                                        yourmail@mail.com<br>
+                                                        <a href="/add-address">Edit <i class="icon-edit"></i></a>
+                                                    </p>
+                                                </div><!-- End .card-body -->
+                                            </div><!-- End .card-dashboard -->
+                                        </div><!-- End .col-lg-6 -->
+
+
+                                    </div><!-- End .row -->
+                                </div><!-- .End .tab-pane -->
+
+                                <div class="tab-pane fade" id="tab-account" role="tabpanel"
+                                    aria-labelledby="tab-account-link">
+                                    <form action="#">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>First Name *</label>
+                                                <input type="text" class="form-control" required>
+                                            </div><!-- End .col-sm-6 -->
+
+                                            <div class="col-sm-6">
+                                                <label>Last Name *</label>
+                                                <input type="text" class="form-control" required>
+                                            </div><!-- End .col-sm-6 -->
+                                        </div><!-- End .row -->
+
+                                        <label>Display Name *</label>
+                                        <input type="text" class="form-control" required>
+                                        <small class="form-text">This will be how your name will be displayed in the
+                                            account section and in reviews</small>
+
+                                        <label>Email address *</label>
+                                        <input type="email" class="form-control" required>
+
+                                        <label>Current password (leave blank to leave unchanged)</label>
+                                        <input type="password" class="form-control">
+
+                                        <label>New password (leave blank to leave unchanged)</label>
+                                        <input type="password" class="form-control">
+
+                                        <label>Confirm new password</label>
+                                        <input type="password" class="form-control mb-2">
+
+                                        <button type="submit" class="btn btn-outline-primary-2">
+                                            <span>SAVE CHANGES</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </button>
+                                    </form>
+                                </div><!-- .End .tab-pane -->
+
+                                <div class="tab-pane fade" id="tab-downloads" role="tabpanel"
+                                    aria-labelledby="tab-downloads-link">
+                                    <p>No downloads available yet.</p>
+                                    <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i
+                                            class="icon-long-arrow-right"></i></a>
+                                </div><!-- .End .tab-pane -->
+
+                            </div>
+                        </div><!-- End .col-lg-9 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .dashboard -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+
+
+</div><!-- End .page-wrapper -->
+<button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+
+
+<script>
+    var table = document.getElementsByTagName('table')[0],
+        rows = table.getElementsByTagName('tr'),
+        text = 'textContent' in document ? 'textContent' : 'innerText';
+
+    for (var i = 1,len = rows.length; i < len; i++) {
+        rows[i].children[0][text] = i;
+    }
+</script>
+
+<!-- Plugins JS File -->
+<script src="assets/js/jquery.min.js"></script>

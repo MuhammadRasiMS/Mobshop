@@ -1,0 +1,366 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+<style>
+    th,
+    td {
+        text - align: center;
+        border: 1 px solid black;
+        border - collapse: collapse;
+    }
+</style>
+
+<!-- Tabs navs -->
+<h3 class="text-center"> Sales Report</h3>
+<ul class="nav nav-tabs nav-fill mb-3" id="ex1" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="ex2-tab-1" data-mdb-toggle="tab" href="#ex2-tabs-1" role="tab"
+            aria-controls="ex2-tabs-1" aria-selected="true">
+            <h6>Weekly Report</h6>
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="ex2-tab-2" data-mdb-toggle="tab" href="#ex2-tabs-2" role="tab"
+            aria-controls="ex2-tabs-2" aria-selected="false">
+            <h6>Monthly Report</h6>
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="ex2-tab-3" data-mdb-toggle="tab" href="#ex2-tabs-3" role="tab"
+            aria-controls="ex2-tabs-3" aria-selected="false">
+            <h6>Yearly Report</h6>
+        </a>
+    </li>
+</ul>
+<!-- Tabs navs -->
+
+<!-- Tabs content -->
+<div class="tab-content" id="ex2-content">
+    <div class="tab-pane fade show active" id="ex2-tabs-1" role="tabpanel" aria-labelledby="ex2-tab-1">
+        <button class="btn btn-success" onclick="weeklyReportPDF()">Weekly Report Pdf</button>
+        <button class="btn btn-primary" onclick="weeklyData()">Weekly Excel Sheet Data</button>
+
+        <table class="table mt-5" id="weekly-table">
+            <thead>
+                <tr>
+
+                    <th>order_id</th>
+                    <th>date</th>
+                    <th>total</th>
+                    <th>paymentMethod</th>
+                    <th>status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each weeklyReport}}
+                <tr>
+
+                    <td>{{_id}}</td>
+                    <td>{{this.date}}</td>
+                    <td>{{this.totalAmount.grandtotal}}</td>
+                    <td>{{this.paymentMethod}}</td>
+                    <td>{{this.status}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <br />
+
+
+    </div>
+    <div class="tab-pane fade" id="ex2-tabs-2" role="tabpanel" aria-labelledby="ex2-tab-2">
+        <button class="btn btn-success" onclick="monthlyReportPDF()">Monthly Report Pdf</button>
+        <button class="btn btn-primary" onclick="monthlyData()">Monthly Excel Sheet Data</button>
+
+        <table class="table mt-5" id="monthly-table">
+            <thead>
+                <tr>
+
+                    <th>order_id</th>
+                    <th>date</th>
+                    <th>total</th>
+                    <th>paymentMethod</th>
+                    <th>status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each monthlyReport}}
+                <tr>
+
+                    <td>{{_id}}</td>
+                    <td>{{this.date}}</td>
+                    <td>{{this.totalAmount.grandtotal}}</td>
+                    <td>{{this.paymentMethod}}</td>
+                    <td>{{this.status}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="ex2-tabs-3" role="tabpanel" aria-labelledby="ex2-tab-3">
+        <button class="btn btn-success" onclick="yearlyReportPDF()">Yearly Report Pdf</button>
+        <button class="btn btn-primary" onclick="yearlyData()">Yearly Excel Sheet Data</button>
+
+        <table class="table mt-5" id="yearly-table">
+            <thead>
+                <tr>
+                    <th>order_id</th>
+                    <th>date</th>
+                    <th>total</th>
+                    <th>paymentMethod</th>
+                    <th>status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each yearlyReport}}
+                <tr>
+
+                    <td>{{_id}}</td>
+                    <td>{{this.date}}</td>
+                    <td>{{this.totalAmount.grandtotal}}</td>
+                    <td>{{this.paymentMethod}}</td>
+                    <td>{{this.status}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Tabs content -->
+
+
+{{!-- pdf report --}}
+<script type="text/javascript">
+
+    function weeklyReportPDF() {
+        var doc = new jsPDF('p','pt','letter');
+        var htmlstring = '';
+        var tempVarToCheckPageHeight = 0;
+        var pageHeight = 0;
+        pageHeight = doc.internal.pageSize.height;
+        specialElementHandlers = {
+            // element with id of "bypass" - jQuery style selector  
+            '#bypassme': function (element,renderer) {
+                // true = "handled elsewhere, bypass text extraction"  
+                return true
+            }
+        };
+        margins = {
+            top: 150,
+            bottom: 60,
+            left: 40,
+            right: 40,
+            width: 600
+        };
+        var y = 20;
+        doc.setLineWidth(2);
+        doc.text(200,y = y + 30,"Weekly Sales Report");
+        doc.autoTable({
+            html: '#weekly-table',
+            startY: 70,
+            theme: 'grid',
+            columnStyles: {
+                0: {
+                    cellWidth: 180,
+                },
+                1: {
+                    cellWidth: 80,
+                },
+                2: {
+                    cellWidth: 80,
+                },
+                            {{!-- 3: {
+            cellWidth: 80,
+        } --}}
+                        },
+    styles: {
+        minCellHeight: 40
+    }
+                    })
+    doc.save('sales-weekly-report.pdf');
+                }
+
+
+    function monthlyReportPDF() {
+        var doc = new jsPDF('p','pt','letter');
+        var htmlstring = '';
+        var tempVarToCheckPageHeight = 0;
+        var pageHeight = 0;
+        pageHeight = doc.internal.pageSize.height;
+        specialElementHandlers = {
+            // element with id of "bypass" - jQuery style selector  
+            '#bypassme': function (element,renderer) {
+                // true = "handled elsewhere, bypass text extraction"  
+                return true
+            }
+        };
+        margins = {
+            top: 150,
+            bottom: 60,
+            left: 40,
+            right: 40,
+            width: 600
+        };
+        var y = 20;
+        doc.setLineWidth(2);
+        doc.text(200,y = y + 30,"Monthly Sales Report");
+        doc.autoTable({
+            html: '#monthly-table',
+            startY: 70,
+            theme: 'grid',
+            columnStyles: {
+                0: {
+                    cellWidth: 180,
+                },
+                1: {
+                    cellWidth: 80,
+                },
+                2: {
+                    cellWidth: 80,
+                },
+                            {{!-- 3: {
+            cellWidth: 80,
+        } --}}
+                        },
+    styles: {
+        minCellHeight: 40
+    }
+                    })
+    doc.save('sales-monthly-report.pdf');
+                }
+
+
+    function yearlyReportPDF() {
+        var doc = new jsPDF('p','pt','letter');
+        var htmlstring = '';
+        var tempVarToCheckPageHeight = 0;
+        var pageHeight = 0;
+        pageHeight = doc.internal.pageSize.height;
+        specialElementHandlers = {
+            // element with id of "bypass" - jQuery style selector  
+            '#bypassme': function (element,renderer) {
+                // true = "handled elsewhere, bypass text extraction"  
+                return true
+            }
+        };
+        margins = {
+            top: 150,
+            bottom: 60,
+            left: 40,
+            right: 40,
+            width: 600
+        };
+        var y = 20;
+        doc.setLineWidth(2);
+        doc.text(200,y = y + 30,"Yearly Sales Report");
+        doc.autoTable({
+            html: '#yearly-table',
+            startY: 70,
+            theme: 'grid',
+            columnStyles: {
+                0: {
+                    cellWidth: 180,
+                },
+                1: {
+                    cellWidth: 80,
+                },
+                2: {
+                    cellWidth: 80,
+                },
+                            {{!-- 3: {
+            cellWidth: 80,
+        } --}}
+                        },
+    styles: {
+        minCellHeight: 40
+    }
+                    })
+    doc.save('sales-yearly-report.pdf');
+                } 
+</script>
+
+{{!-- /////////////pdf end////////// --}}
+
+{{!-- ///////////excel sheet start//////////////// --}}
+
+<script>
+    function weeklyData() {
+        const data = `
+    order_id, date, Total, Status
+    {{#each weeklyReport}}
+    {{_id}},{{date}}',{{totalAmount.grandtotal}},{{status}}
+    {{/each}}`
+
+        const blob = new Blob([data],{ type: 'octet-stream' })
+
+        const href = URL.createObjectURL(blob)
+
+        const a = Object.assign(document.createElement('a'),{
+            href,
+            style: 'display:none',
+            download: 'data.csv'
+        })
+
+        document.body.appendChild(a)
+
+        a.click()
+
+        URL.revokeObjectURL(href)
+
+        a.remove()
+    }
+
+    function monthlyData() {
+        const data = `
+    order_id, date, Total, Status
+    {{#each monthlyReport}}
+    '{{_id}}',{{date}}',{{totalAmount.grandtotal}}',{{status}}
+    {{/each}}`
+
+        const blob = new Blob([data],{ type: 'octet-stream' })
+
+        const href = URL.createObjectURL(blob)
+
+        const a = Object.assign(document.createElement('a'),{
+            href,
+            style: 'display:none',
+            download: 'data.csv'
+        })
+
+        document.body.appendChild(a)
+
+        a.click()
+
+        URL.revokeObjectURL(href)
+
+        a.remove()
+    }
+
+    function yearlyData() {
+        const data = `
+    order_id, date, Total, Status
+    {{#each yearlyReport}}
+    '{{_id}}',{{date}}',{{totalAmount.grandtotal}}',{{status}}
+    {{/each}}`
+
+        const blob = new Blob([data],{ type: 'octet-stream' })
+
+        const href = URL.createObjectURL(blob)
+
+        const a = Object.assign(document.createElement('a'),{
+            href,
+            style: 'display:none',
+            download: 'data.csv'
+        })
+
+        document.body.appendChild(a)
+
+        a.click()
+
+        URL.revokeObjectURL(href)
+
+        a.remove()
+    }
+</script>

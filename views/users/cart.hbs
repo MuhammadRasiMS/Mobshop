@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+    <!-- molla/cart.html  22 Nov 2019 09:55:06 GMT -->
+
+    <body>
+        <div class="page-wrapper">
+
+
+            <main class="main">
+                <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+                    <div class="container">
+                        <h1 class="page-title">Shopping Cart<span>Shop</span></h1>
+                    </div><!-- End .container -->
+                </div><!-- End .page-header -->
+                <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                    <div class="container">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+                        </ol>
+                    </div><!-- End .container -->
+                </nav><!-- End .breadcrumb-nav -->
+
+                <div class="page-content">
+                    <div class="cart">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <table class="table table-cart table-mobile">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Total</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        {{#each products}}
+                                        <tbody>
+                                            <tr>
+
+                                                <td class="product-col">
+                                                    <div class="product">
+                                                        <figure class="product-media">
+                                                            <a href="">
+                                                                <img src="/images/product/{{product.img.[0]}}"
+                                                                    alt="Product image">
+                                                            </a>
+                                                        </figure>
+
+                                                        <h3 class="product-title">
+                                                            <a href="#">{{this.product.name}}</a>
+                                                        </h3><!-- End .product-title -->
+                                                    </div><!-- End .product -->
+                                                </td>
+                                                <td class="price-col" id="productPrice{{this.product._id}}">
+                                                    {{this.product.price}}</td>
+
+                                                <td class="quantity-col">
+                                                    <div class="cart-product-quantity">
+                                                        <button class="cart-item-count mr-3"
+                                                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../userId}}',-1)">-</button>
+                                                        <span id="{{this.product._id}}">{{this.quantity}}</span>
+                                                        <button class="cart-item-count ml-3"
+                                                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../userId}}',1)">+</button>
+                                                    </div><!-- End .cart-product-quantity -->
+                                                </td>
+                                                <td class="total-col" id="productTotal{{this.product._id}}">
+                                                    {{this.product.price}}</td>
+                                                <td class="remove-col">
+                                                    <a href="/remove-cart/{{this.product._id}}"><button
+                                                            onclick="return confirm('Do you want to remove the cart item - {{this.name}} ?')"
+                                                            class="btn-remove"><i class="icon-close"></i></button>
+                                                </td></a>
+                                            </tr>
+                                        </tbody>
+                                        {{/each}}
+                                    </table><!-- End .table table-wishlist -->
+
+                                    <div class="cart-bottom">
+                                        <div class="cart-discount">
+                                            {{!-- {{#if total}} --}}
+                                                <div class="input-group" >
+                                                    <input type="text" name="couponCode" value="{{couponObj.couponCode}}" class="form-control p-4" required placeholder="coupon code" id="couponCode">
+                                                    {{!-- <div class=""> --}}
+
+                                                            {{#if couponObj.couponAppliedSuccess}}
+                                                            <a class="btn btn-primary" href="/delete-coupon" id="delete-coupon">delete</a>
+                                                            {{else}}
+                                                        <button id="apply-cpn" class="btn btn-primary" type="submit" onclick="applyCoupon()">
+                                                            <i class="icon-long-arrow-right"></i>
+                                                            </button>
+                                                            {{/if}}
+                                                    {{!-- </div><!-- .End .input-group-append --> --}}
+                                                </div><!-- End .input-group -->
+                                            {{!-- {{/if}} --}}
+                                        </div><!-- End .cart-discount -->
+
+                                        <a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i
+                                                class="icon-refresh"></i></a>
+                                    </div><!-- End .cart-bottom -->
+                                </div><!-- End .col-lg-9 -->
+                                <aside class="col-lg-3">
+                                    <div class="summary summary-cart">
+                                        <h3 class="summary-title">Cart Total</h3><!-- End .summary-title -->
+
+                                        <table class="table table-summary">
+                                            <tbody>
+
+                                                {{!-- {{#each total}} --}}
+                                                <tr class="summary-subtotal">
+                                                    <td>Subtotal:</td>
+                                                    <td><span id="subtotal">{{totalValue.grandtotal}}</span></td>
+                                                </tr><!-- End .summary-subtotal -->
+                                                <tr class="summary-shipping">
+                                                    <td>Shipping:</td>
+                                                    <td>&nbsp;</td>
+                                                </tr>
+
+                                                <tr class="summary-shipping-row">
+                                                    <td>
+                                                        <div class="custom-control custom-radio">
+                                                            <input type="radio" id="free-shipping" name="shipping"
+                                                                class="custom-control-input">
+                                                            <label class="custom-control-label" for="free-shipping">Free
+                                                                Shipping</label>
+                                                        </div><!-- End .custom-control -->
+                                                    </td>
+                                                    <td>$0.00</td>
+                                                </tr><!-- End .summary-shipping-row -->
+
+                                                <tr class="summary-total">
+                                                    <td>Coupon Discount:</td>
+                                                    <td id="coupon-price">{{couponObj.discountPrice}}</td>
+                                                </tr>
+
+                                                <tr class="summary-total">
+                                                    <td>Total:</td>
+                                                    {{#if couponObj.totalPriceAfterOffer}}
+                                                    <td><span id="total">{{couponObj.totalPriceAfterOffer}}</span></td>
+                                                    {{else}}
+                                                    <td><span id="total">{{totalValue.grandtotal}}</span></td>
+                                                    {{/if}}
+                                                </tr><!-- End .summary-total -->
+                                                {{!-- {{/each}} --}}
+                                            </tbody>
+                                        </table><!-- End .table table-summary -->
+
+                                        <a href="/place-order"
+                                            class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO
+                                            CHECKOUT</a>
+                                    </div><!-- End .summary -->
+
+                                    <a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE
+                                            SHOPPING</span><i class="icon-refresh"></i></a>
+                                </aside><!-- End .col-lg-3 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .container -->
+                    </div><!-- End .cart -->
+                </div><!-- End .page-content -->
+            </main><!-- End .main -->
+
+            
+        </div><!-- End .page-wrapper -->
+        <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+        <div class="mobile-menu-container">
+            <div class="mobile-menu-wrapper">
+                <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+                <form action="#" method="get" class="mobile-search">
+                    <label for="mobile-search" class="sr-only">Search</label>
+                    <input type="search" class="form-control" name="mobile-search" id="mobile-search"
+                        placeholder="Search in..." required>
+                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                </form>
+
+                <nav class="mobile-nav">
+                    <ul class="mobile-menu">
+                        <li class="active">
+                            <a href="index.html">Home</a>
+
+                            
+                        </li>
+                        <li>
+                            <a href="category.html">Shop</a>
+                            
+                        </li>
+                        <li>
+                            <a href="/products-list" class="sf-with-ul">Product</a>
+                            
+                        </li>
+                        <li>
+                            <a href="#">Pages</a>
+                            
+                        </li>
+                        <li>
+                            <a href="blog.html">Blog</a>
+
+                            
+                        </li>
+                        <li>
+                            <a href="elements-list.html">Elements</a>
+                            
+                        </li>
+                    </ul>
+                </nav><!-- End .mobile-nav -->
+
+                <div class="social-icons">
+                    <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                    <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                    <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                    <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+                </div><!-- End .social-icons -->
+            </div><!-- End .mobile-menu-wrapper -->
+        </div><!-- End .mobile-menu-container -->
+
+        <!-- Sign in / Register Modal -->
+        <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="icon-close"></i></span>
+                        </button>
+
+                        <div class="form-box">
+                            <div class="form-tab">
+                                <ul class="nav nav-pills nav-fill" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin"
+                                            role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="register-tab" data-toggle="tab" href="#register"
+                                            role="tab" aria-controls="register" aria-selected="false">Register</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="tab-content-5">
+                                    <div class="tab-pane fade show active" id="signin" role="tabpanel"
+                                        aria-labelledby="signin-tab">
+                                        <form action="#">
+                                            <div class="form-group">
+                                                <label for="singin-email">Username or email address *</label>
+                                                <input type="text" class="form-control" id="singin-email"
+                                                    name="singin-email" required>
+                                            </div><!-- End .form-group -->
+
+                                            <div class="form-group">
+                                                <label for="singin-password">Password *</label>
+                                                <input type="password" class="form-control" id="singin-password"
+                                                    name="singin-password" required>
+                                            </div><!-- End .form-group -->
+
+                                            <div class="form-footer">
+                                                <button type="submit" class="btn btn-outline-primary-2">
+                                                    <span>LOG IN</span>
+                                                    <i class="icon-long-arrow-right"></i>
+                                                </button>
+
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        id="signin-remember">
+                                                    <label class="custom-control-label" for="signin-remember">Remember
+                                                        Me</label>
+                                                </div><!-- End .custom-checkbox -->
+
+                                                <a href="#" class="forgot-link">Forgot Your Password?</a>
+                                            </div><!-- End .form-footer -->
+                                        </form>
+                                        <div class="form-choice">
+                                            <p class="text-center">or sign in with</p>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <a href="#" class="btn btn-login btn-g">
+                                                        <i class="icon-google"></i>
+                                                        Login With Google
+                                                    </a>
+                                                </div><!-- End .col-6 -->
+                                                <div class="col-sm-6">
+                                                    <a href="#" class="btn btn-login btn-f">
+                                                        <i class="icon-facebook-f"></i>
+                                                        Login With Facebook
+                                                    </a>
+                                                </div><!-- End .col-6 -->
+                                            </div><!-- End .row -->
+                                        </div><!-- End .form-choice -->
+                                    </div><!-- .End .tab-pane -->
+                                    <div class="tab-pane fade" id="register" role="tabpanel"
+                                        aria-labelledby="register-tab">
+                                        <form action="#">
+                                            <div class="form-group">
+                                                <label for="register-email">Your email address *</label>
+                                                <input type="email" class="form-control" id="register-email"
+                                                    name="register-email" required>
+                                            </div><!-- End .form-group -->
+
+                                            <div class="form-group">
+                                                <label for="register-password">Password *</label>
+                                                <input type="password" class="form-control" id="register-password"
+                                                    name="register-password" required>
+                                            </div><!-- End .form-group -->
+
+                                            <div class="form-footer">
+                                                <button type="submit" class="btn btn-outline-primary-2">
+                                                    <span>SIGN UP</span>
+                                                    <i class="icon-long-arrow-right"></i>
+                                                </button>
+
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        id="register-policy" required>
+                                                    <label class="custom-control-label" for="register-policy">I agree to
+                                                        the <a href="#">privacy policy</a> *</label>
+                                                </div><!-- End .custom-checkbox -->
+                                            </div><!-- End .form-footer -->
+                                        </form>
+                                        <div class="form-choice">
+                                            <p class="text-center">or sign in with</p>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <a href="#" class="btn btn-login btn-g">
+                                                        <i class="icon-google"></i>
+                                                        Login With Google
+                                                    </a>
+                                                </div><!-- End .col-6 -->
+                                                <div class="col-sm-6">
+                                                    <a href="#" class="btn btn-login  btn-f">
+                                                        <i class="icon-facebook-f"></i>
+                                                        Login With Facebook
+                                                    </a>
+                                                </div><!-- End .col-6 -->
+                                            </div><!-- End .row -->
+                                        </div><!-- End .form-choice -->
+                                    </div><!-- .End .tab-pane -->
+                                </div><!-- End .tab-content -->
+                            </div><!-- End .form-tab -->
+                        </div><!-- End .form-box -->
+                    </div><!-- End .modal-body -->
+                </div><!-- End .modal-content -->
+            </div><!-- End .modal-dialog -->
+        </div><!-- End .modal -->
+
+
+    </body>
+
+    <!-- molla/cart.html  22 Nov 2019 09:55:06 GMT -->
+</html>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+    function changeQuantity(cartId,productId,userId,count) {
+        let quantity = parseInt(document.getElementById(productId).innerHTML)
+        count = parseInt(count)
+        $.ajax({
+            url: '/change-product-quantity',
+            data: {
+                user: userId,
+                cart: cartId,
+                product: productId,
+                count: count,
+                quantity: quantity
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.removeProduct) {
+                    alert("Product removed from cart")
+                    location.reload()
+                } else {
+                    let price = document.getElementById('productPrice' + productId).innerHTML
+                    let qty = document.getElementById(productId).innerHTML = quantity + count
+                    document.getElementById('productTotal' + productId).innerHTML = qty * price
+                    document.getElementById('subtotal').innerHTML = response.total.grandtotal
+                    document.getElementById('total').innerHTML = response.total.grandtotal
+                }
+
+            }
+        })
+    }
+
+
+    function applyCoupon(){
+        let couponCode = document.getElementById('couponCode').value
+        $.ajax({
+            url:'/enter-coupon',
+            data:{
+                code:couponCode
+            },
+            method:'post',
+            success:(response)=>{
+                if(response.couponFind){
+                    if(response.expiredCoupon){
+                        
+                        swal("Expired!", "Coupon is expired!","Error!");
+                    }else if(response.appliedCoupon){
+                        
+                        swal("Already used","You already applied this Coupon","Error!")
+                    }else{
+                        
+                        swal("Success!","Coupon applied successfully","Success!!!");
+                        document.getElementById('total').innerHTML=response.totalPriceAfterOffer
+                        document.getElementById('coupon-price').innerHTML= Math.round(response.discountPrice)
+                        document.getElementById('apply-cpn').innerHTML = `<a class="btn btn-primary" href="/delete-coupon">delete</a>`
+
+                    }
+                }else{
+                    swal("Not found!","Coupon not available!","Error!")
+                }
+            }
+        })
+    }
+</script>

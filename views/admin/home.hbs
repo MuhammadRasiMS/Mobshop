@@ -1,0 +1,584 @@
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
+                <div class="chartCard">
+                    <div class="chartBox">
+                        <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                <li class="dropdown-header text-start">
+                                    <h6>Filter</h6>
+                                </li>
+                                <li><a onclick="weeklyReport()" class="dropdown-item" href="#">Weekly</a></li>
+                                <li><a onclick="monthlyReport()" class="dropdown-item" href="#">Monthly</a></li>
+                                <li><a onclick="yearlyReport()" class="dropdown-item" href="#">Yearly</a></li>
+                            </ul>
+                        </div>
+                        <canvas id="line-chart"></canvas>
+                        <div class="container">
+                            <div class="row">
+                            
+                                
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        <hr>
+        <div class="text-center">
+            <h2>Payments Graph</h2>
+        </div>
+        <div class="row">
+            <div class="col" style="height: 15rem;">
+                <canvas id="payment-chart"></canvas>
+            </div>
+        </div>
+
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="https://parall.ax/parallax/js/jspdf.js"></script>
+            <script
+                src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+            <script>
+                function dailyData() {
+                    const data = `
+    order_id, date, Total, Status
+    {{#each weeklyReport}}
+    '{{_id}}',{{date}}',{{totalAmount.grandtotal}}',{{status}}
+    {{/each}}`
+
+                    const blob = new Blob([data],{ type: 'octet-stream' })
+
+                    const href = URL.createObjectURL(blob)
+
+                    const a = Object.assign(document.createElement('a'),{
+                        href,
+                        style: 'display:none',
+                        download: 'data.csv'
+                    })
+
+                    document.body.appendChild(a)
+
+                    a.click()
+
+                    URL.revokeObjectURL(href)
+
+                    a.remove()
+                }
+
+                function monthlyData() {
+                    const data = `
+    order_id, date, Total, Status
+    {{#each monthlyReport}}
+    '{{_id}}',{{date}}',{{totalAmount.grandtotal}}',{{status}}
+    {{/each}}`
+
+                    const blob = new Blob([data],{ type: 'octet-stream' })
+
+                    const href = URL.createObjectURL(blob)
+
+                    const a = Object.assign(document.createElement('a'),{
+                        href,
+                        style: 'display:none',
+                        download: 'data.csv'
+                    })
+
+                    document.body.appendChild(a)
+
+                    a.click()
+
+                    URL.revokeObjectURL(href)
+
+                    a.remove()
+                }
+
+                function yearlyData() {
+                    const data = `
+    order_id, date, Total, Status
+    {{#each yearlyReport}}
+    '{{_id}}',{{date}}',{{totalAmount.grandtotal}}',{{status}}
+    {{/each}}`
+
+                    const blob = new Blob([data],{ type: 'octet-stream' })
+
+                    const href = URL.createObjectURL(blob)
+
+                    const a = Object.assign(document.createElement('a'),{
+                        href,
+                        style: 'display:none',
+                        download: 'data.csv'
+                    })
+
+                    document.body.appendChild(a)
+
+                    a.click()
+
+                    URL.revokeObjectURL(href)
+
+                    a.remove()
+                }
+            </script>
+
+            <script>
+
+                function generatePDF() {
+                    const canvas = document.getElementById('line-chart');
+
+                    const canvasImage = canvas.toDataURL('image/jpeg',1.0);
+
+                    let pdf = new jsPDF()
+
+                    pdf.setFontSize(20)
+
+                    pdf.addImage(canvasImage,'JPEG',15,15,185,150)
+
+                    pdf.save("mychart.pdf")
+                }
+            </script>
+
+            <script>
+
+                var myChart;
+                var myChart2;
+                var myChart3;
+                var chart1;
+                var chart2;
+                var chart3;
+                window.onload = (event) => {
+                    weeklyReport()
+                };
+
+
+                /* <------------------------------------------------------Weekly report---------------------------------------------------------------> */
+
+
+
+                function weeklyReport() {
+
+                    chart1 = true
+
+
+                    const data = {
+                        labels: [{{#each dailySales }}'{{_id}}',{{/each}}],
+                        datasets: [{
+                            label: 'Total Sale Amount',
+                            data: [{{#each dailySales }}'{{total}}',{{/each}}],
+                backgroundColor: [
+                    'rgba(255, 26, 104, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(0, 0, 0, 0.2)'
+                ],
+                    borderColor: [
+                        'rgba(255, 26, 104, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(0, 0, 0, 1)'
+                    ],
+                        borderWidth: 1
+        }]
+      };
+
+
+                // </block:setup>
+
+                // <block:config:0>
+                const config = {
+                    type: 'bar',
+                    data: data,
+                    options: {
+                        aspectRatio: 3,
+                        responsive: true
+                    }
+                };
+
+                if (chart2) {
+                    myChart2.destroy()
+                }
+                if (chart3) {
+                    myChart3.destroy()
+                }
+
+                myChart = new Chart(document.getElementById('line-chart'),config)
+      
+       
+       
+    }
+
+                /* <---------------------------------------------------Weekly report ends------------------------------------------------------------> */
+
+
+
+
+                /* <-----------------------------------------------------Monthly report---------------------------------------------------------------> */
+
+
+                function monthlyReport() {
+
+                    chart2 = true
+
+                    const data = {
+                        labels: [{{#each monthlySales }}'{{_id}}',{{/each}}],
+                        datasets: [{
+                            label: 'Total Sale Amount',
+                            data: [{{#each monthlySales }}'{{total}}',{{/each}}],
+                backgroundColor: [
+                    'rgb(103 119 239)',
+                    'rgb(102 187 106)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 99, 132)'
+                ]
+        }]
+      };
+                // </block:setup>
+
+                // <block:config:0>
+                const config = {
+                    type: 'line',
+                    data: data,
+                    options: {
+                        aspectRatio: 3,
+                        responsive: true
+                    }
+                };
+
+                if (chart1) {
+                    myChart.destroy()
+                }
+                if (chart3) {
+                    myChart3.destroy()
+                }
+
+                myChart2 = new Chart(document.getElementById('line-chart'),config)
+      
+          
+     
+    }
+
+
+                /* <---------------------------------------------------Monthly report ends------------------------------------------------------------> */
+
+
+
+
+                function yearlyReport() {
+
+                    chart3 = true
+
+                    const data = {
+                        labels: [{{#each yearlySales }}'{{_id}}',{{/each}}],
+                        datasets: [{
+                            label: 'Total Sale Amount',
+                            data: [{{#each yearlySales }}'{{total}}',{{/each}}],
+                backgroundColor: [
+                    'rgb(103 119 239)',
+                    'rgb(102 187 106)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 99, 132)'
+                ]
+        }]
+      };
+                // </block:setup>
+
+                // <block:config:0>
+                const config = {
+                    type: "doughnut",
+                    data: data,
+                    options: {
+                        aspectRatio: 3,
+                        responsive: true
+                    }
+                };
+                if (chart1) {
+                    myChart.destroy()
+                }
+                if (chart2) {
+                    myChart2.destroy()
+                }
+
+                myChart3 = new Chart(document.getElementById('line-chart'),config)
+    }
+
+            </script>
+
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+            <script
+                src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+            <style>
+                th,
+                td {
+                    text - align: center;
+                    border: 1 px solid black;
+                    border - collapse: collapse;
+                }
+            </style>
+            <center>
+
+                <table hidden class="table mt-5" id="weekly-table">
+                    <thead>
+                        <tr>
+
+                            <th>order_id</th>
+                            <th>date</th>
+                            <th>total</th>
+                            <th>status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each weeklyReport}}
+                        <tr>
+
+                            <td>{{_id}}</td>
+                            <td>{{this.date}}</td>
+                            <td>{{this.totalAmount.grandtotal}}</td>
+                            <td>{{this.status}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                <br />
+
+                <table hidden class="table mt-5" id="monthly-table">
+                    <thead>
+                        <tr>
+
+                            <th>order_id</th>
+                            <th>date</th>
+                            <th>total</th>
+                            <th>status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each monthlyReport}}
+                        <tr>
+
+                            <td>{{_id}}</td>
+                            <td>{{this.date}}</td>
+                            <td>{{this.totalAmount.grandtotal}}</td>
+                            <td>{{this.status}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+
+                <br>
+
+                <table hidden class="table mt-5" id="yearly-table">
+                    <thead>
+                        <tr>
+                            <th>order_id</th>
+                            <th>date</th>
+                            <th>total</th>
+                            <th>status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each weeklyReport}}
+                        <tr>
+
+                            <td>{{_id}}</td>
+                            <td>{{this.date}}</td>
+                            <td>{{this.totalAmount.grandtotal}}</td>
+                            <td>{{this.status}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+
+            </center>
+            <script type="text/javascript">
+
+                function weeklyReportPDF() {
+                    var doc = new jsPDF('p','pt','letter');
+                    var htmlstring = '';
+                    var tempVarToCheckPageHeight = 0;
+                    var pageHeight = 0;
+                    pageHeight = doc.internal.pageSize.height;
+                    specialElementHandlers = {
+                        // element with id of "bypass" - jQuery style selector  
+                        '#bypassme': function (element,renderer) {
+                            // true = "handled elsewhere, bypass text extraction"  
+                            return true
+                        }
+                    };
+                    margins = {
+                        top: 150,
+                        bottom: 60,
+                        left: 40,
+                        right: 40,
+                        width: 600
+                    };
+                    var y = 20;
+                    doc.setLineWidth(2);
+                    doc.text(200,y = y + 30,"Weekly Sales Report");
+                    doc.autoTable({
+                        html: '#weekly-table',
+                        startY: 70,
+                        theme: 'grid',
+                        columnStyles: {
+                            0: {
+                                cellWidth: 180,
+                            },
+                            1: {
+                                cellWidth: 80,
+                            },
+                            2: {
+                                cellWidth: 80,
+                            },
+                            {{!-- 3: {
+                        cellWidth: 80,
+                    } --}}
+                        },
+                styles: {
+                    minCellHeight: 40
+                }
+                    })
+                doc.save('sales-weekly-report.pdf');
+                }
+
+
+                function monthlyReportPDF() {
+                    var doc = new jsPDF('p','pt','letter');
+                    var htmlstring = '';
+                    var tempVarToCheckPageHeight = 0;
+                    var pageHeight = 0;
+                    pageHeight = doc.internal.pageSize.height;
+                    specialElementHandlers = {
+                        // element with id of "bypass" - jQuery style selector  
+                        '#bypassme': function (element,renderer) {
+                            // true = "handled elsewhere, bypass text extraction"  
+                            return true
+                        }
+                    };
+                    margins = {
+                        top: 150,
+                        bottom: 60,
+                        left: 40,
+                        right: 40,
+                        width: 600
+                    };
+                    var y = 20;
+                    doc.setLineWidth(2);
+                    doc.text(200,y = y + 30,"Monthly Sales Report");
+                    doc.autoTable({
+                        html: '#monthly-table',
+                        startY: 70,
+                        theme: 'grid',
+                        columnStyles: {
+                            0: {
+                                cellWidth: 180,
+                            },
+                            1: {
+                                cellWidth: 80,
+                            },
+                            2: {
+                                cellWidth: 80,
+                            },
+                            {{!-- 3: {
+                        cellWidth: 80,
+                    } --}}
+                        },
+                styles: {
+                    minCellHeight: 40
+                }
+                    })
+                doc.save('sales-monthly-report.pdf');
+                }
+
+
+                function yearlyReportPDF() {
+                    var doc = new jsPDF('p','pt','letter');
+                    var htmlstring = '';
+                    var tempVarToCheckPageHeight = 0;
+                    var pageHeight = 0;
+                    pageHeight = doc.internal.pageSize.height;
+                    specialElementHandlers = {
+                        // element with id of "bypass" - jQuery style selector  
+                        '#bypassme': function (element,renderer) {
+                            // true = "handled elsewhere, bypass text extraction"  
+                            return true
+                        }
+                    };
+                    margins = {
+                        top: 150,
+                        bottom: 60,
+                        left: 40,
+                        right: 40,
+                        width: 600
+                    };
+                    var y = 20;
+                    doc.setLineWidth(2);
+                    doc.text(200,y = y + 30,"Yearly Sales Report");
+                    doc.autoTable({
+                        html: '#yearly-table',
+                        startY: 70,
+                        theme: 'grid',
+                        columnStyles: {
+                            0: {
+                                cellWidth: 180,
+                            },
+                            1: {
+                                cellWidth: 80,
+                            },
+                            2: {
+                                cellWidth: 80,
+                            },
+                            {{!-- 3: {
+                        cellWidth: 80,
+                    } --}}
+                        },
+                styles: {
+                    minCellHeight: 40
+                }
+                    })
+                doc.save('sales-yearly-report.pdf');
+                } 
+            </script>
+
+<script>
+    
+        const data = {
+            labels: ['COD','UPI','paypal'],
+            datasets: [{
+                label: 'Total Sale Amount',
+                data: [{{ percentageCOD }},{{ percentageUPI }},{{ percentagePaypal }}],
+        backgroundColor: [
+            'rgb(103 119 239)',
+            'rgb(102 187 106)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 99, 132)'
+        ]
+        }]
+      };
+        // </block:setup>
+
+        // <block:config:0>
+        const config = {
+            type: 'doughnut',
+            data: data,
+            options: {
+                aspectRatio: 3,
+                responsive: true
+            }
+        };
+
+
+        paymentChart = new Chart(document.getElementById('payment-chart'),config)
+</script>
+
+
+

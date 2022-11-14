@@ -1,0 +1,413 @@
+{{#if user}}
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+<header  class="header header-intro-clearance header-4 ">
+
+            <div class="header-middle sticky-header">
+                <div class="container">
+                    <div class="header-left">
+                        <button class="mobile-menu-toggler">
+                            <span class="sr-only">Toggle mobile menu</span>
+                            <i class="icon-bars"></i>
+                        </button>
+                        
+                        <a href="/" class="logo">
+                            <img src="/assets/images/demos/demo-4/logo.png" width="65" height="20">
+                        </a>
+                    </div><!-- End .header-left -->
+                    
+                    <div class="header-center">
+                        <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
+                            <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                            {{!-- <form action="" method="get"> --}}
+                                <div class="header-search-wrapper search-wrapper-wide">
+                                    <label for="q" class="sr-only">Search</label>
+                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                                    <input autocomplete="off" onkeyup="sendData(this)" type="search" class="form-control" name="q" id="q"
+                                        placeholder="Search product ..." required>
+                                        
+                                </div><!-- End .header-search-wrapper -->
+                            {{!-- </form> --}}
+                            
+                            
+                        </div><!-- End .header-search -->
+                        <div class="row" style="margin-left: -700px; margin-top: 90px">
+                            <div class="col-4"></div>
+                            <div class="col-6 ">
+                                <div style="height: 10px; width: 500px; position: fixed; z-index:2;" id="searchResults">
+                                    <div class="row">
+                                        <div id="productName" class="col-4"></div>
+                                        <div id="ProductImage" class="col-4"></div>
+                                        <div class="col-4"></div>
+                        
+                                    </div>
+                        
+                                </div>
+                            </div>
+                            <div class="col-"></div>
+                        
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="header-right">
+                    {{#if vUser}}
+                    
+                    <div class="m-4"><a href="/dashboard">{{vUser.name}}</a></div>
+                      <div>
+                          <a href="/logout">Log Out</a>
+                       </div>
+                      
+                        <div class="wishlist">
+                            <a href="/wishlist" title="Wishlist">
+                                {{!-- {{#if wishListCount}} --}}
+                                <div class="icon">
+                                    <i class="icon-heart-o"></i>
+                                    <span class="wishlist-count badge">{{wishListCount}}</span>
+                                </div>
+                                {{!-- {{/if}} --}}
+                                <p>Wishlist</p>
+                            </a>
+                        </div><!-- End .compare-dropdown -->
+                        
+                        <div class="dropdown cart-dropdown">
+                            <a href="/cart" class="dropdown-toggle">
+                                <div class="icon">
+                                    <i class="icon-shopping-cart"></i>
+                                    <span class="cart-count" id="cart-count">{{vUser.cartCount}}</span>
+                                </div>
+                                <p>Cart</p>
+                            </a>
+
+                        </div><!-- End .cart-dropdown -->
+
+                        {{else}}
+                        
+                      <div>
+                          <a href="/login">Log in</a>
+                       </div>
+                          <div class="wishlist">
+                            <a href="/wishlist" title="Wishlist">
+                                <div class="icon">
+                                    <i class="icon-heart-o"></i>
+                                    {{!-- <span class="wishlist-count badge">3</span> --}}
+                                </div>
+                                <p>Wishlist</p>
+                            </a>
+                        </div><!-- End .compare-dropdown -->
+
+                        <div class="dropdown cart-dropdown">
+                            <a href="/cart" class="dropdown-toggle" role="button" >
+                                <div class="icon">
+                                    <i class="icon-shopping-cart"></i>
+                                    {{!-- <span class="cart-count">2</span> --}}
+                                </div>
+                                <p>Cart</p>
+                            </a>
+
+                        </div><!-- End .cart-dropdown -->
+                        {{/if}} 
+
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+
+            <div class="header-bottom sticky-header">
+                <div class="container">
+                    
+
+                    <div class="header-center">
+                        <nav class="main-nav">
+                            <ul class="menu ">
+                                <li class="megamenu-container active">
+                                    <a href="/" >Home</a>
+
+                                    
+                                </li>
+                                <li>
+                                    <a href="category.html" class="">Shop</a>
+
+                                    
+                                </li>
+                                <li>
+                                    <a href="/products-list/?page=1" class="">Products</a>
+
+                                    
+                                </li>
+                                <li>
+                                    <a href="#" class="sf-with-ul">Pages</a>
+
+                                    <ul>
+                                        <li>
+                                            <a href="about.html" class="sf-with-ul">About</a>
+
+                                            <ul>
+                                                <li><a href="about.html">About 01</a></li>
+                                                <li><a href="about-2.html">About 02</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="contact.html" class="sf-with-ul">Contact</a>
+
+                                            <ul>
+                                                <li><a href="contact.html">Contact 01</a></li>
+                                                <li><a href="contact-2.html">Contact 02</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="login.html">Login</a></li>
+                                        <li><a href="faq.html">FAQs</a></li>
+                                        <li><a href="404.html">Error 404</a></li>
+                                        <li><a href="coming-soon.html">Coming Soon</a></li>
+                                    </ul>
+                                </li>
+                                
+                                
+                            </ul><!-- End .menu -->
+                        </nav><!-- End .main-nav -->
+                    </div><!-- End .header-center -->
+                    {{#if vUser}}
+                    <div class="header-right">
+                        <ul class="menu">
+                            <li>
+                                <a href="#" class="sf-with-ul">Your Account</a>
+                            
+                                <ul>
+                                    <li>
+                                        <a href="about.html" class="sf-with-ul">About</a>
+                            
+                                        
+                                    </li>
+                                    <li>
+                                        <a href="/orders" class="sf-with-ul">Your Orders</a>
+
+                                    </li>
+                                    <li>
+                                        <a href="contact.html" class="sf-with-ul">Contact</a>
+                            
+                                        
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    {{/if}}
+                </div><!-- End .container -->
+                
+            </div><!-- End .header-bottom -->
+
+        
+
+
+        </header><!-- End .header -->
+
+           
+
+
+       
+        <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container mobile-menu-light">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+            
+            <form action="" method="get" class="mobile-search">
+                <label for="mobile-search" class="sr-only">Search</label>
+                <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required>
+                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+            </form>
+
+            <nav class="mobile-nav">
+                <ul class="mobile-menu">
+                    <li class="active">
+                        <a href="index.html">Home</a>
+            
+                        
+                    </li>
+                    <li>
+                        <a href="category.html">Shop</a>
+                        
+                    </li>
+                    <li>
+                        <a href="/products-list" class="sf-with-ul">Product</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">Pages</a>
+                        <ul>
+                            <li>
+                                <a href="about.html">About</a>
+            
+                                <ul>
+                                    <li><a href="about.html">About 01</a></li>
+                                    <li><a href="about-2.html">About 02</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="contact.html">Contact</a>
+            
+                                <ul>
+                                    <li><a href="contact.html">Contact 01</a></li>
+                                    <li><a href="contact-2.html">Contact 02</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="login.html">Login</a></li>
+                            <li><a href="faq.html">FAQs</a></li>
+                            <li><a href="404.html">Error 404</a></li>
+                            <li><a href="coming-soon.html">Coming Soon</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="blog.html">Blog</a>
+            
+                        
+                    </li>
+                    <li>
+                        <a href="elements-list.html">Elements</a>
+                        
+                    </li>
+                </ul>
+            </nav><!-- End .mobile-nav -->
+
+            <div class="social-icons">
+                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+            </div><!-- End .social-icons -->
+        </div><!-- End .mobile-menu-wrapper -->
+    </div><!-- End .mobile-menu-container -->
+
+    
+
+    {{{body}}}
+
+    
+
+
+<footer class="footer">
+    
+    <div class="footer-middle">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="widget widget-about">
+                        <img src="/images/site-logo.png" class="footer-logo" alt="Footer Logo" width="105" height="25">
+                        <p>A mobile phone is a wireless handheld device that allows users to make and receive calls.</p>
+
+                        <div class="widget-call">
+                            <i class="icon-phone"></i>
+                            Got Question? Call us 24/7
+                            <a href="tel:#">+91 9685472000</a>
+                        </div><!-- End .widget-call -->
+                    </div><!-- End .widget about-widget -->
+                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="widget">
+                        <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
+
+                        <ul class="widget-list">
+                            <li><a href="about.html">About MobShop</a></li>
+                            <li><a href="#">Our Services</a></li>
+                            <li><a href="#">How to shop on Molla</a></li>
+                            <li><a href="faq.html">FAQ</a></li>
+                            <li><a href="contact.html">Contact us</a></li>
+                        </ul><!-- End .widget-list -->
+                    </div><!-- End .widget -->
+                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="widget">
+                        <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                        <ul class="widget-list">
+                            <li><a href="#">Payment Methods</a></li>
+                            <li><a href="#">Money-back guarantee!</a></li>
+                            <li><a href="#">Returns</a></li>
+                            <li><a href="#">Shipping</a></li>
+                            <li><a href="#">Terms and conditions</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul><!-- End .widget-list -->
+                    </div><!-- End .widget -->
+                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="widget">
+                        <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                        <ul class="widget-list">
+                            <li><a href="#">Sign In</a></li>
+                            <li><a href="cart.html">View Cart</a></li>
+                            <li><a href="#">My Wishlist</a></li>
+                            <li><a href="#">Track My Order</a></li>
+                            <li><a href="#">Help</a></li>
+                        </ul><!-- End .widget-list -->
+                    </div><!-- End .widget -->
+                </div><!-- End .col-sm-6 col-lg-3 -->
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </div><!-- End .footer-middle -->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="footer-copyright">Copyright © 2019 MobShop Store. All Rights Reserved.</p>
+            <!-- End .footer-copyright -->
+            <figure class="footer-payments">
+                <img src="/assets/images/payments.png" alt="Payment methods" width="272" height="20">
+            </figure><!-- End .footer-payments -->
+        </div><!-- End .container -->
+    </div><!-- End .footer-bottom -->
+</footer><!-- End .footer -->
+
+<script>
+    function sendData(e) {
+            const searchResults = document.getElementById('searchResults');
+            let match = e.value.match(/^[ a-zA-Z ]*/);
+            let match2 = e.value.match(/\s*/);
+            if (match2[0] === e.value) {
+                searchResults.innerHTML = '';
+                return;
+            }
+            if (match[0] === e.value) {
+                fetch('getSearchProducts',{
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ payload: e.value })
+                }).then(res => res.json()).then(data => {
+                    let payload = data.payload;
+                    console.log('payload:---:::--')
+                    console.log(payload)
+                    searchResults.innerHTML = '';
+                    if (payload.length < 1) {
+                        searchResults.innerHTML = '<p>Sorry. Nothing Found!</p>';
+                    }
+                    payload.forEach((item,index) => {
+                        console.log('item~~~~~~')
+                        console.log(item)
+                        console.log('index=====')
+                        console.log(index)
+                        //if (index > 0) searchResults.innerHTML += '<hr>';
+                        searchResults.innerHTML += 
+                        `<div style="background-color: white; margin-top: -14px" class="row ">
+                                <div class="col-8 m-4">${item.name}</div>
+                                <div class="col-2">
+                                    <a href="/view-product/${item._id}"><img style="width: 80px; height: 80px;"
+                                        src="/images/product/${item.img[0]}" alt="Brand image"></a>
+                                </div>
+                                <hr>
+                            </div>`
+                       
+                    });
+                });
+                return;
+            }
+                searchResults.innerHTML = ''
+        }
+</script>
+
+    {{else}}
+    {{{body}}}
+    {{/if}}
+

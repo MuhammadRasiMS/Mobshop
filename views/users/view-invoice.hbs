@@ -1,0 +1,140 @@
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML to PDF</title>
+<style>
+    .elem {
+        background-color: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+    integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+    <div class="elem p-5">
+
+        <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 padding">
+            <div class="card">
+                <div class="card-header p-4">
+                    <a class="pt-2 d-inline-block" href="index.html" data-abc="true">MobShop.com</a>
+
+                    {{!-- {{#each orders}} --}}
+                    <div class="float-right">
+                        <h3 class="mb-0">Invoice {{orders._id}}</h3>
+                        Date: {{orders.date}}
+                    </div>
+
+
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-sm-6">
+                            <h5 class="mb-3">From:</h5>
+                            <h3 class="text-dark mb-1">MobShop</h3>
+                            <div>29, Singla Street</div>
+                            <div>Sikeston,New Delhi 110034</div>
+                            <div>Email: contact@mobshop.com</div>
+                            <div>Phone: +91 7558023283</div>
+                        </div>
+                        <div class="col-sm-6 ">
+                            <h5 class="mb-3">To:</h5>
+                            <h3 class="text-dark mb-1"> {{orders.address.firstName}} {{orders.address.lastName}}</h3>
+                            <div>{{orders.address.address}} </div>
+                            <div>{{orders.address.country}} {{orders.address.city}} </div>
+                            <div>{{orders.address.state}} {{orders.address.pincode}} </div>
+
+                            <div>Email:{{orders.address.email}} </div>
+                        </div>
+                        <div>Phone: {{orders.address.phone}}</div>
+                    </div>
+
+
+                    <strong class="text-dark">
+                        <h1>Total
+                    </strong>
+                    
+                    {{#if orders.discountedPrice}}
+                    <strong class="text-dark">₹ {{orders.discountedPrice}}</h1></strong>
+                    {{else}}
+                    <strong class="text-dark">₹ {{orders.totalAmount.grandtotal}}</h1></strong>
+                    {{/if}}
+                    {{!-- {{/each}} --}}
+                </div>
+
+                <div class="table-responsive-sm">
+
+
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center">#</th>
+                                <th>Item</th>
+                                {{!-- <th>Description</th> --}}
+                                <th class="right">Price</th>
+                                <th class="center">Qty</th>
+                                {{!-- <th class="right">Total</th> --}}
+
+
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            {{#each orderProducts}}
+                            <tr>
+                                <td class="center"></td>
+
+                                <td class="left strong">{{this.product.name}}</td>
+                                {{!-- <td class="left">Iphone 10X with headphone</td> --}}
+                                <td class="right">₹ {{this.product.price}}</td>
+                                <td class="center">{{this.quantity}}</td>
+                                {{!-- <td class="right">$15,000</td> --}}
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+
+                <div class="card-footer bg-white">
+                    <p class="mb-0">MobShop.com</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div>
+
+
+        <div class="text-center">
+            <button class="download btn btn-primary ">Download PDF</button>
+        </div>
+
+    </div>
+    <script>
+        let div = document.querySelector(".elem");
+        let btn = document.querySelector(".download");
+        btn.addEventListener('click',() => {
+            html2pdf().from(div).save()
+        })
+
+
+
+
+        var table = document.getElementsByTagName('table')[0],
+            rows = table.getElementsByTagName('tr'),
+            text = 'textContent' in document ? 'textContent' : 'innerText';
+
+        for (var i = 1,len = rows.length; i < len; i++) {
+            rows[i].children[0][text] = i;
+        }
+    </script>
+
+</body>
+
+
+</html>
