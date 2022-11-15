@@ -10,8 +10,8 @@ const { order } = require('paypal-rest-sdk')
 const { response } = require('../app')
 
 var instance = new Razorpay({
-    key_id: 'rzp_test_v7Jb4RCdsOBEoc',
-    key_secret: 'pvtCC4EOu3h7fwc7U2EkHaz8',
+    key_id: process.env.KEYID,
+    key_secret: process.env.KEYSECRET,
 });
 
 module.exports = {
