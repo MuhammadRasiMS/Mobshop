@@ -81,9 +81,8 @@
                             <div class="mt-3">
                                 <label class="form-label mt-4" for="category">Category</label>
                                 <select name="category" class="form-control form-control-lg" id="{{this._id}}">
-                                    <option value="{{productData.category}}">{{productData.category}}</option>
+                                    <option value="{{productData.category._id}}">{{productData.category.name}}</option>
                                     {{#each category}}
-                                
                                     <option value="{{this._id}}">{{this.name}}</option>
                                     {{/each}}
                                 </select>

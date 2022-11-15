@@ -31,11 +31,26 @@ module.exports = {
     },
 
     getProductDetails: (productId) => {
-        return new Promise((resolve,reject) => {
-            db.get().collection(collection.PRODUCTS_COLLECTION).findOne({ _id: objectId(productId) }).then(data => {
-                resolve(data)
-                console.log(data)
-            })
+        return new Promise(async(resolve,reject) => {
+            let product = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate([
+                {
+                    $match: {_id:objectId(productId)}
+                },
+                {
+                    $lookup: {
+                        from: 'category',
+                        localField: 'category',
+                        foreignField: '_id',
+                        as: 'category'
+                    }
+                },
+                {
+                    $unwind: '$category'
+                }
+            ]).toArray()
+            console.log(product[0])
+                resolve(product[0])
+        
         })
     },
 
