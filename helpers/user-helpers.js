@@ -9,6 +9,8 @@ const { resolve } = require('node:path')
 const { order } = require('paypal-rest-sdk')
 const { response } = require('../app')
 
+require("dotenv").config();
+
 var instance = new Razorpay({
     key_id: process.env.KEYID,
     key_secret: process.env.KEYSECRET,
