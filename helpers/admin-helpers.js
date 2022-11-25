@@ -425,7 +425,46 @@ module.exports = {
             let deleteCoupon = await db.get().collection(collection.COUPON_COLLECTION).deleteOne({_id:objectId(couponId)})
             resolve(deleteCoupon)
         })
-    }
+    },
+
+    returnPayment: (orderId,userId) => {
+        return new Promise(async (resolve,reject) => {
+            let orderDetails = await db.get().collection(collection.ORDER_COLLECTION).findOne({ _id: (objectId(orderId)) })
+            console.log(orderDetails);
+            refundAmount = parseInt(orderDetails.totalAmount.grandtotal)
+            console.log(">>>>>>>>>>>>>>>>>>>...refundAmount");
+            console.log(refundAmount);
+            let orderMethod = await db.get().collection(collection.ORDER_COLLECTION).findOne({ _id: objectId(orderId),paymentMethod: 'COD' })
+            console.log(">>>>>>>>>>>>>>>>>>>...ordermethod");
+            console.log(orderMethod)
+            if (orderMethod == null) {
+                let retunPayment = await db.get().collection(collection.USERS_COLLECTION).updateOne({ _id: objectId(userId) },{
+                    $inc: { "wallet": refundAmount }
+                })
+            }
+            resolve()
+        })
+
+    },
+
+    refundOrderStatusUpdate: (orderId,userId) => {
+        console.log('helpers in oderstaus update')
+        console.log(orderId);
+        console.log(userId);
+        orderstatus = 'Refund Completed'
+        return new Promise(async (resolve,reject) => {
+            let orderStatus = await db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId),userId: objectId(userId) },
+                {
+                    $set: { status: orderstatus,},
+
+                },{ upsert: true })
+
+
+            resolve(orderStatus)
+            // console.log(orderStatus);
+        })
+
+    },
 }
 
 

@@ -1,15 +1,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HTML to PDF</title>
-<style>
-    .elem {
-        background-color: rgb(255, 255, 255);
-        color: rgb(0, 0, 0);
-    }
-</style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
-    integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.4/jspdf.plugin.autotable.min.js"></script>
+
 </head>
 
 <body>
@@ -52,13 +48,13 @@
 
 
                     <strong class="text-dark">
-                        <h1>Total
+                       <h1> Total </h1>
                     </strong>
                     
                     {{#if orders.discountedPrice}}
-                    <strong class="text-dark">₹ {{orders.discountedPrice}}</h1></strong>
+                    <h1><strong class="text-dark">Rs. {{orders.discountedPrice}}</strong></h1>
                     {{else}}
-                    <strong class="text-dark">₹ {{orders.totalAmount.grandtotal}}</h1></strong>
+                    <h1><strong class="text-dark">Rs. {{orders.totalAmount.grandtotal}}</strong></h1>
                     {{/if}}
                     {{!-- {{/each}} --}}
                 </div>
@@ -88,7 +84,7 @@
 
                                 <td class="left strong">{{this.product.name}}</td>
                                 {{!-- <td class="left">Iphone 10X with headphone</td> --}}
-                                <td class="right">₹ {{this.product.price}}</td>
+                                <td class="right">Rs. {{this.product.price}}</td>
                                 <td class="center">{{this.quantity}}</td>
                                 {{!-- <td class="right">$15,000</td> --}}
                             </tr>
@@ -111,29 +107,35 @@
 
 
         <div class="text-center">
-            <button class="download btn btn-primary ">Download PDF</button>
+            <button onclick="invoicePDF()" class="download btn btn-primary ">Download PDF</button>
         </div>
 
     </div>
-    <script>
-        let div = document.querySelector(".elem");
-        let btn = document.querySelector(".download");
-        btn.addEventListener('click',() => {
-            html2pdf().from(div).save()
-        })
 
+<script>
+     function invoicePDF() {
+            var doc = new jsPDF();
 
+            // We'll make our own renderer to skip this editor
+            var specialElementHandlers = {
+                '#getPDF': function (element,renderer) {
+                    return true;
+                },
+                '.controls': function (element,renderer) {
+                    return true;
+                }
+            };
 
+            // All units are in the set measurement for the document
+            // This can be changed to "pt" (points), "mm" (Default), "cm", "in"
+            doc.fromHTML($('.elem').get(0),15,15,{
+                'width': 170,
+                'elementHandlers': specialElementHandlers
+            });
 
-        var table = document.getElementsByTagName('table')[0],
-            rows = table.getElementsByTagName('tr'),
-            text = 'textContent' in document ? 'textContent' : 'innerText';
-
-        for (var i = 1,len = rows.length; i < len; i++) {
-            rows[i].children[0][text] = i;
+            doc.save('Generated.pdf');
         }
-    </script>
-
+</script>
 </body>
 
 

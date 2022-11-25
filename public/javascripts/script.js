@@ -35,10 +35,6 @@ function addToCart(proId) {
 
 
 function removeWishListProduct(proId,wishListId){
-    console.log('proId:');
-    console.log(proId);
-    console.log('wishListId:');
-    console.log(wishListId);
     if(confirm("Are you sure")){
         $.ajax({
             url:'/delete-wishlist-product',

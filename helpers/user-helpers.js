@@ -21,6 +21,7 @@ module.exports = {
     doSignup: (userData) => {
         return new Promise(async (resolve,reject) => {
             userData.password = await bcrypt.hash(userData.password,10);
+            userData.wallet = parseInt(0);
             db.get().collection(collection.USERS_COLLECTION).insertOne(userData).then((data) => {
                 resolve(data)
             })
@@ -357,7 +358,6 @@ module.exports = {
                 createdAt: new Date()
             }
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
-                db.get().collection(collection.CART_COLLECTION).deleteOne({ user: objectId(order.userId) })
                 resolve(response.insertedId)
             })
         })
@@ -895,6 +895,44 @@ module.exports = {
             ]).toArray()
             resolve(ordreItem[0])
         })
+    },
+
+    walletAmountCheckForUser: (userId) => {
+        return new Promise(async (resolve,reject) => {
+            let user = await db.get().collection('user').findOne({ _id: objectId(userId) })
+            walletAmount = Math.round(user.wallet)
+            resolve(walletAmount)
+        })
+    },
+
+    walletAmountCheck: (userId, totalprice) => {
+        return new Promise(async(resolve,reject)=>{
+            let user = await db.get().collection(collection.USERS_COLLECTION).findOne({_id: objectId(userId)})
+            walletAmount = user.wallet
+            if(walletAmount >= totalprice.grandtotal){
+                resolve(walletAmount)
+            }else{
+                resolve(null)
+            }
+        })
+    },
+
+    walletAmountReduce: (userId, totalAmount)=>{
+        return new Promise(async(resolve,reject)=>{
+            let returnPayment = await db.get().collection(collection.USERS_COLLECTION).updateOne({_id: objectId(userId)},{
+                $inc: {"wallet": -totalAmount.grandtotal}
+            })
+            let user = await db.get().collection(collection.USERS_COLLECTION).findOne({_id:objectId(userId)})
+            resolve()
+        })
+    },
+
+    deleteCart:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            await db.get().collection(collection.CART_COLLECTION).deleteOne({ user: objectId(userId) })
+            resolve()
+        })
     }
+   
 }
 

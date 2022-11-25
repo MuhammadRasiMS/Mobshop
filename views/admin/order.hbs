@@ -172,9 +172,6 @@
                             </form>
                         </td>
                         {{/ifStatusEquals}}
-                        {{#ifEquals this.status 'cancelled' }}
-                        <td></td>
-                        {{/ifEquals}}
                         
                         {{#ifEquals this.status 'delivered' }}
                         <td></td>
@@ -203,6 +200,26 @@
                         {{#ifEquals this.status 'return rejected' }}
                         <td class="text-danger">return rejected</td>
                         {{/ifEquals}}
+
+
+
+                        {{#ifOrderStatusEquals this.status 'Cancelled' 'return approved'
+                        }}
+                        <td><a href="/admin/return-payment/{{../this._id}}/{{../this.userId}}" class="btn btn-danger">Return Payment</a></td>
+                        
+                        {{else}}
+                        {{#ifEquals ../this.status 'Refund Completed'}}
+                        <td>
+                            <aclass="btn btn-success btn-lg" disabled><span style="color:#19b93e">Refund Completed</span>
+                                </aclass=>
+                        </td>
+                        {{else}}
+                        {{/ifEquals}}
+                        
+                        {{/ifOrderStatusEquals}}
+
+
+
                     </tr>
                     {{/if}}
                     {{/each}}

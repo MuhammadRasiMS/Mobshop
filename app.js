@@ -38,7 +38,17 @@ const hbs=exbs.create({
       }else{
         return options.inverse();
       }
-    }
+    },
+    ifOrderStatusEquals: (status,value1,value2,options) => {
+
+      if (status == value1 || status == value2) {
+
+        return options.fn()
+      } else {
+
+        return options.inverse();
+      }
+    },
   }
   
 })

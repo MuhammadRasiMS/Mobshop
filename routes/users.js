@@ -18,9 +18,13 @@ paypal.configure({
 router.use('/',async(req,res,next)=>{
   if(req.session.user){
     wishListCount = await userHelpers.getWishListCount(req.session.user._id)
+    cartCount = await userHelpers.getCartCount(req.session.user._id)
     res.locals.wishListCount = wishListCount;
+    res.locals.cartCount = cartCount;
   }else{
     res.locals.wishListCount = null;
+    res.locals.cartCount = null;
+
   }
   req.app.locals.layout = 'layout'
   next()
@@ -274,16 +278,17 @@ router.post('/getSearchProducts',async (req,res) => {
 /* <---------------------------------------------User Dashboard--------------------------------------------------> */
 
 router.get('/dashboard',notLoggedInChecker,async (req,res) => {
-  let userAddress = await userHelpers.getUsertDetails(req.session.user._id)
-  let orders = await userHelpers.getUserOrders(req.session.user._id)
-  res.render('users/dashboard',{ user: true,vUser: req.session.user,orders,userAddress })
+  let userId = req.session.user._id
+  let userAddress = await userHelpers.getUsertDetails(userId)
+  let walletData = await userHelpers.walletAmountCheckForUser(userId)
+  walletBalance = parseInt(walletData)
+  let orders = await userHelpers.getUserOrders(userId)
+  res.render('users/dashboard',{ user: true,vUser: req.session.user,orders,userAddress, walletBalance })
 })
 
 /* <---------------------------------------------Wishlist--------------------------------------------------> */
 
 router.post("/addToWishList",(req,res) => {
-  console.log('req,body:');
-  console.log(req.body)
   userHelpers.addToWishList(req.body,req.session.user._id).then(() => {
     res.json({ login: true });
   });
@@ -392,7 +397,8 @@ router.get('/place-order',notLoggedInChecker,async (req,res,next) => {
       userHelpers.getTotalAmount(userId).then(async (total) => {
         let totalAmount = total.grandtotal
       let discount = await userHelpers.getCartDiscount(totalAmount,userId)
-      res.render('users/checkout',{ vUser: req.session.user,total,cartItems,totalAmount,user: true,address,discount })
+      let walletBalance = await userHelpers.walletAmountCheckForUser(userId)
+        res.render('users/checkout',{ vUser: req.session.user,total,cartItems,totalAmount,walletBalance,user: true,address,discount })
     })
     
   })
@@ -406,7 +412,7 @@ router.post('/place-order',async (req,res) => {
   let products = await userHelpers.getCartProductList(req.body.userId)
   let totalPrice = await userHelpers.getTotalAmount(req.body.userId)
   req.session.discountPrice= ''
-  userHelpers.placeOrder(req.body,products,totalPrice).then((orderId) => {
+  userHelpers.placeOrder(req.body,products,totalPrice).then(async(orderId) => {
     if (req.body['paymentMethod'] == 'COD') {
       userHelpers.getOrderProductQuantity(orderId).then((data) => {
         data.forEach((element) => {
@@ -415,15 +421,33 @@ router.post('/place-order',async (req,res) => {
       });
       userHelpers.removeCoupon(userId).then(()=>{
         res.json({ codSuccess: true });
-      })
+      });
+    } else if (req.body['paymentMethod']=='wallet'){
+      let walletAmount = await userHelpers.walletAmountCheck(userId,totalPrice)
+      console.log("walletAmount");
+
+      console.log(walletAmount);
+      if(walletAmount != null){
+        paymentWallet = await userHelpers.walletAmountReduce(userId, totalPrice, walletAmount)
+        orderStatus = await userHelpers.changePaymentStatus(orderId)
+        userHelpers.getOrderProductQuantity(orderId).then((data)=>{
+          data.forEach((element)=>{
+            userHelpers.stockDecrease(element);
+          });
+        });
+        req.session.applyCoupon = false
+        res.json({wallet:true,orderId:orderId})
+      }else{
+        res.json({walletErr : true})
+      }
+      
     } else if (req.body['paymentMethod'] == 'UPI') {
       userHelpers.generateRazorpay(orderId,totalPrice).then((response) => {
         console.log(response);
         res.json({ response,razorpay: true })
       })
     } else {
-
-      res.json({ paypal: true, orderId:orderId })
+      res.json({ paypal: true, orderId:orderId }) 
     }
   })
 })
@@ -470,8 +494,8 @@ router.get('/pay/:id',(req,res) => {
       "payment_method": "paypal"
     },
     "redirect_urls": {
-      "return_url": "http://mobshop.cf/order-success/"+orderId,
-      "cancel_url": "http://mobshop.cf/cancel"
+      "return_url": "http://localhost:3000/order-success/"+orderId,
+      "cancel_url": "http://localhost:3000/cancel"
     },
     "transactions": [{
       "amount": {
@@ -525,7 +549,9 @@ router.get('/success',(req,res) => {
 
 /* <---------------------------------------------Order Success Page--------------------------------------------------> */
 
-router.get('/order-success',notLoggedInChecker,(req,res) => {
+router.get('/order-success',notLoggedInChecker,async(req,res) => {
+  let userId = req.session.user._id
+  await userHelpers.deleteCart(userId)
   res.render('users/order-success')
 })
 
@@ -535,6 +561,8 @@ router.get('/order-success/:id',notLoggedInChecker,async(req,res)=>{
     userId: req.session.user._id,
     status: 'placed'
   }
+  let userId = req.session.user._id
+  await userHelpers.deleteCart(userId)
   await userHelpers.updateOrderStatus(data)
   res.redirect('/order-success')
 })
@@ -575,7 +603,7 @@ router.get('/view-invoice/:id',async (req,res) => {
   let orderId = req.params.id
   let orders = await userHelpers.getInvoice(orderId);
   let orderProducts = await userHelpers.getOrderProducts(orderId);
-  res.render('users/view-invoice',{ user: true,orders,orderProducts })
+  res.render('users/view-invoice',{ vUser: req.session.user,user: true,orders,orderProducts })
 })
 
 /* <---------------------------------------------Order return--------------------------------------------------> */

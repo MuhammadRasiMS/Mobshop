@@ -138,6 +138,18 @@
 
                                             <tr class="summary-shipping-row">
                                                 <td>
+                                                    {{!-- <div class="custom-control custom-radio"> --}}
+                                                        <input type="radio" id="paymentMethod" name="paymentMethod" value="wallet" >
+                                                        <label for="free-shipping">Pay from wallet</label>
+                                                        {{!--
+                                                    </div><!-- End .custom-control --> --}}
+                                                    
+                                                </td>
+                                                <td><p class="amount" style="color: rgb(14, 178, 14)">₹ {{walletBalance}}</p></td>
+                                            </tr><!-- End .summary-shipping-row -->
+
+                                            <tr class="summary-shipping-row">
+                                                <td>
 
                                                     {{!-- <div class="custom-control custom-radio"> --}}
                                                         <input type="radio" id="standart-shipping" name="paymentMethod"
@@ -208,8 +220,7 @@
 
 <!-- Plugins JS File -->
 <script src="assets/js/jquery.min.js"></script>
-
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
     $("#checkout-form").submit((e) => {
@@ -219,18 +230,18 @@
             method: 'post',
             data: $('#checkout-form').serialize(),
             success: (response) => {
-               
-                {{!-- alert(response) --}}
                 if (response.codSuccess) {
                     location.href = '/order-success'
                 } else if(response.razorpay){
-                    alert("You are redirect to Razorpay")
-                    console.log(response)
                     razorPayment(response.response)
-                }else{
+                }else if (response.wallet){
+                        console.log(response)
+                        location.href = '/order-success'
+                }else if(response.walletErr){
+                    swal("Insufficient balance!!!")
+                }
+                else{
                     getPaypal(response.orderId)
-                    
-                    console.log("OOOOOOOOOOOrder Id"+response.orderId)
                 }
             }
         })
@@ -290,7 +301,6 @@
             data:{
             
             },
-            //method:'post',
             success:(response)=>{
                 location.href=response
             }

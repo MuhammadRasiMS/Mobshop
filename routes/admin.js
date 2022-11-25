@@ -272,5 +272,20 @@ router.get('/sales-report',verifyAdmin,async(req,res)=>{
   res.render('admin/sales-report',{ admin: true,dailySales,monthlySales,yearlySales,weeklyReport,monthlyReport,yearlyReport })
 })
 
+// ---------------------------------------------
+
+router.get('/return-payment/:orderId/:userId',async (req,res) => {
+  // console.log(req.);
+  orderId = req.params.orderId
+  userId = req.params.userId
+  console.log(',.,...................vvvvvvvvvvvvvvv  ...,,,,,,,,,,,,,,,,,,,,,,,,,,,');
+  console.log(orderId);
+  console.log(userId);
+  let PaymentMethod = await adminHelpers.returnPayment(orderId,userId)
+  let orderStatus = await adminHelpers.refundOrderStatusUpdate(orderId,userId).then(response)
+  console.log("refund completed");
+  res.redirect('/admin/order')
+}),
+
 module.exports = router;
 
