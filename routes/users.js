@@ -494,8 +494,8 @@ router.get('/pay/:id',(req,res) => {
       "payment_method": "paypal"
     },
     "redirect_urls": {
-      "return_url": "http://localhost:3000/order-success/"+orderId,
-      "cancel_url": "http://localhost:3000/cancel"
+      "return_url": "http://mobshop.cf/order-success/"+orderId,
+      "cancel_url": "http://mobshop.cf/cancel"
     },
     "transactions": [{
       "amount": {
